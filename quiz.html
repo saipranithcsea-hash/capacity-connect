@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Skill Quiz</h1>
+
+        <p>Test your knowledge after completing the lesson.</p>
+
+        <div class="card">
+
+            <h3>Question 1</h3>
+
+            <p>
+                Which language is mainly used to add
+                interactivity to a web page?
+            </p>
+
+            <label>
+                <input type="radio" name="q1" value="HTML">
+                HTML
+            </label>
+            <br>
+
+            <label>
+                <input type="radio" name="q1" value="CSS">
+                CSS
+            </label>
+            <br>
+
+            <label>
+                <input type="radio" name="q1" value="JavaScript">
+                JavaScript
+            </label>
+            <br>
+
+            <label>
+                <input type="radio" name="q1" value="SQL">
+                SQL
+            </label>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Question 2</h3>
+
+            <p>
+                Which language is used to style a web page?
+            </p>
+
+            <label>
+                <input type="radio" name="q2" value="HTML">
+                HTML
+            </label>
+            <br>
+
+            <label>
+                <input type="radio" name="q2" value="CSS">
+                CSS
+            </label>
+            <br>
+
+            <label>
+                <input type="radio" name="q2" value="JavaScript">
+                JavaScript
+            </label>
+            <br>
+
+            <label>
+                <input type="radio" name="q2" value="Python">
+                Python
+            </label>
+
+        </div>
+
+
+        <button onclick="calculateScore()">
+            Submit Quiz
+        </button>
+
+        <h2 id="result"></h2>
+
+        <p>
+            <a href="learning.html">← Back to Learning</a>
+        </p>
+
+    </div>
+
+
+    <script>
+
+        function calculateScore() {
+
+            let score = 0;
+
+            let answer1 = document.querySelector(
+                'input[name="q1"]:checked'
+            );
+
+            let answer2 = document.querySelector(
+                'input[name="q2"]:checked'
+            );
+
+
+            if (answer1 && answer1.value === "JavaScript") {
+                score += 1;
+            }
+
+            if (answer2 && answer2.value === "CSS") {
+                score += 1;
+            }
+
+
+            let percentage = (score / 2) * 100;
+
+
+            document.getElementById("result").innerText =
+                "Your Score: " + percentage + "%";
+
+
+            localStorage.setItem("quizScore", percentage);
+
+        }
+
+    </script>
+
+</body>
+</html>

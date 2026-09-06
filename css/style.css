@@ -1,0 +1,164 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f7fb;
+    color: #1e293b;
+}
+
+h1 {
+    color: #2563eb;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background: white;
+}
+
+nav h2 {
+    margin: 0;
+    color: #2563eb;
+}
+
+nav a {
+    text-decoration: none;
+    margin-left: 25px;
+    color: #1e293b;
+}
+.hero {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.hero-text {
+    max-width: 700px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding: 40px 50px 70px;
+}
+
+.card {
+    background: white;
+    width: 280px;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+    color: #2563eb;
+    margin-bottom: 12px;
+}
+
+.card p {
+    line-height: 1.5;
+}
+footer {
+    text-align: center;
+    padding: 25px;
+    background: #1e293b;
+    color: white;
+    margin-top: 30px;
+}
+
+footer p {
+    margin: 0;
+}
+@media (max-width: 768px) {
+
+    nav {
+        padding: 15px 20px;
+    }
+
+    nav a {
+        margin-left: 10px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 17px;
+    }
+
+    .features {
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 20px;
+    }
+
+    .card {
+        width: 80%;
+    }
+}
+.start-button {
+    display: inline-block;
+    background: #2563eb;
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+.login-box {
+    width: 350px;
+    margin: 80px auto;
+    padding: 35px;
+    background: white;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-box h2 {
+    margin-bottom: 25px;
+}
+
+.login-box input {
+    display: block;
+    width: 90%;
+    margin: 15px auto;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+}
+
+.login-box button {
+    margin-top: 10px;
+}
+
+.login-box a {
+    color: #2563eb;
+    text-decoration: none;
+}

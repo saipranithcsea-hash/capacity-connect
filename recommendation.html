@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Recommendations - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Skill Gap & Recommendations</h1>
+
+        <h2>Your Skill Gap</h2>
+
+        <p id="skillMessage">
+            Checking your assessment...
+        </p>
+
+        <div id="skillGap"></div>
+
+
+        <h2>Recommended Course</h2>
+
+        <div class="card">
+
+    <h3 id="courseName">
+        JavaScript Basics
+    </h3>
+
+    <p id="courseDescription">
+        Recommended based on your skill assessment.
+    </p>
+
+    <div>
+    <a href="learning.html" class="start-button">
+        Start Learning
+    </a>
+
+    <a href="trainer.html" class="start-button">
+        Find a Trainer
+    </a>
+</div>
+
+</div>
+
+
+        <p>
+            <a href="assessment.html">← Back to Assessment</a>
+        </p>
+
+    </div>
+
+
+    <script>
+
+        let htmlLevel =
+            localStorage.getItem("htmlLevel") || "Beginner";
+
+        let cssLevel =
+            localStorage.getItem("cssLevel") || "Beginner";
+
+        let jsLevel =
+            localStorage.getItem("jsLevel") || "Beginner";
+
+
+        let skillGap = document.getElementById("skillGap");
+
+        let gaps = [];
+
+
+        if (htmlLevel === "Beginner") {
+            gaps.push("HTML");
+        }
+
+        if (cssLevel === "Beginner") {
+            gaps.push("CSS");
+        }
+
+        if (jsLevel === "Beginner") {
+            gaps.push("JavaScript");
+        }
+
+
+        if (gaps.length > 0) {
+
+            document.getElementById("skillMessage").innerText =
+                "These skills need improvement:";
+
+            gaps.forEach(function(skill) {
+
+                let card = document.createElement("div");
+
+                card.className = "card";
+
+                card.innerHTML =
+                    "<h3>" + skill + "</h3>" +
+                    "<p>Current Level: Beginner</p>" +
+                    "<p>Required Level: Intermediate</p>";
+
+                skillGap.appendChild(card);
+
+            });
+
+        } else {
+
+            document.getElementById("skillMessage").innerText =
+                "Great! No major skill gaps found.";
+
+        }
+
+
+        // Course recommendation
+
+        if (jsLevel === "Beginner") {
+
+            document.getElementById("courseName").innerText =
+                "JavaScript Basics";
+
+            document.getElementById("courseDescription").innerText =
+                "Recommended because your JavaScript level is Beginner.";
+
+        } else if (htmlLevel === "Beginner") {
+
+            document.getElementById("courseName").innerText =
+                "HTML Fundamentals";
+
+            document.getElementById("courseDescription").innerText =
+                "Recommended because your HTML level is Beginner.";
+
+        } else if (cssLevel === "Beginner") {
+
+            document.getElementById("courseName").innerText =
+                "CSS Fundamentals";
+
+            document.getElementById("courseDescription").innerText =
+                "Recommended because your CSS level is Beginner.";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

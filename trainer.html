@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trainer - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Find a Trainer</h1>
+
+        <p id="trainerMessage">
+            Finding a suitable trainer for you...
+        </p>
+
+
+        <div class="card">
+
+            <h3 id="trainerName">
+                Web Development Trainer
+            </h3>
+
+            <p>
+                <strong>Expertise:</strong>
+                <span id="expertise">Web Development, JavaScript</span>
+            </p>
+
+            <p>
+                <strong>Experience:</strong>
+                5 Years
+            </p>
+
+            <p>
+                <strong>Languages:</strong>
+                English, Telugu
+            </p>
+
+            <p>
+                <strong>Recommended For:</strong>
+                <span id="recommendedSkill">JavaScript</span>
+            </p>
+
+            <button onclick="requestSession()">
+                Request Session
+            </button>
+
+            <p id="message"></p>
+
+        </div>
+
+
+        <p>
+            <a href="recommendation.html">
+                ← Back to Recommendations
+            </a>
+        </p>
+
+    </div>
+
+
+    <script>
+
+        let jsLevel =
+            localStorage.getItem("jsLevel") || "Beginner";
+
+
+        if (jsLevel === "Beginner") {
+
+            document.getElementById("trainerMessage").innerText =
+                "Recommended trainer based on your JavaScript skill gap.";
+
+        } else {
+
+            document.getElementById("trainerMessage").innerText =
+                "Here is a suitable Web Development trainer.";
+
+        }
+
+
+        function requestSession() {
+
+            document.getElementById("message").innerText =
+                "Session request sent successfully!";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

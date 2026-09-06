@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Skill Assessment - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Skill Assessment</h1>
+
+        <p>Choose your current skill level:</p>
+
+
+        <label>HTML</label>
+
+        <select id="htmlLevel">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+
+
+        <br><br>
+
+
+        <label>CSS</label>
+
+        <select id="cssLevel">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+
+
+        <br><br>
+
+
+        <label>JavaScript</label>
+
+        <select id="jsLevel">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+
+
+        <br><br>
+
+
+        <button onclick="saveAssessment()">
+            Submit Assessment
+        </button>
+
+        <p id="message"></p>
+
+    </div>
+
+
+    <script>
+
+        function saveAssessment() {
+
+            let htmlLevel =
+                document.getElementById("htmlLevel").value;
+
+            let cssLevel =
+                document.getElementById("cssLevel").value;
+
+            let jsLevel =
+                document.getElementById("jsLevel").value;
+
+
+            localStorage.setItem("htmlLevel", htmlLevel);
+
+            localStorage.setItem("cssLevel", cssLevel);
+
+            localStorage.setItem("jsLevel", jsLevel);
+
+
+            document.getElementById("message").innerText =
+                "Assessment saved successfully!";
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "recommendation.html";
+
+            }, 1000);
+
+        }
+
+    </script>
+
+</body>
+
+</html>

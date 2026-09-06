@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Learning - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Learning Hub</h1>
+
+        <div class="card">
+
+            <h3>JavaScript Basics</h3>
+
+            <p>Learn JavaScript fundamentals step by step.</p>
+
+            <p><strong>Choose Language:</strong></p>
+
+            <button onclick="changeLanguage('English')">
+                English
+            </button>
+
+            <button onclick="changeLanguage('Telugu')">
+                Telugu
+            </button>
+
+            <button onclick="changeLanguage('Hindi')">
+                Hindi
+            </button>
+
+            <br><br>
+
+            <h3 id="lessonTitle">
+                JavaScript Basics - English
+            </h3>
+
+            <p id="lessonText">
+                Learn the fundamentals of JavaScript.
+            </p>
+
+            <a href="quiz.html" class="start-button">
+                Start Quiz
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Web Development</h3>
+
+            <p>
+                Learn HTML, CSS and basic web development.
+            </p>
+
+        </div>
+
+
+        <p>
+            <a href="recommendation.html">
+                ← Back to Recommendations
+            </a>
+        </p>
+
+    </div>
+
+
+    <script>
+
+        function changeLanguage(language) {
+
+            let title =
+                document.getElementById("lessonTitle");
+
+            let text =
+                document.getElementById("lessonText");
+
+
+            if (language === "English") {
+
+                title.innerText =
+                    "JavaScript Basics - English";
+
+                text.innerText =
+                    "Learn the fundamentals of JavaScript.";
+
+            }
+
+
+            else if (language === "Telugu") {
+
+                title.innerText =
+                    "JavaScript Basics - Telugu";
+
+                text.innerText =
+                    "JavaScript yokka prathamikalanu nerchukondi.";
+
+            }
+
+
+            else if (language === "Hindi") {
+
+                title.innerText =
+                    "JavaScript Basics - Hindi";
+
+                text.innerText =
+                    "JavaScript ki mool baatein seekhein.";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

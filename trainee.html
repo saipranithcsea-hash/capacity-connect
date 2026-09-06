@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trainee Profile - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Capacity Connect</h1>
+
+        <h2>Trainee Profile</h2>
+
+        <input type="text" id="name" placeholder="Full Name">
+
+        <input type="text" id="qualification" placeholder="Qualification">
+
+        <input type="text" id="skills" placeholder="Skills">
+
+        <input type="text" id="interests" placeholder="Interests">
+
+        <input type="text" id="goal" placeholder="Career Goal">
+
+        <button onclick="saveProfile()">Save Profile</button>
+
+        <p id="message"></p>
+
+    </div>
+
+
+    <script>
+
+        function saveProfile() {
+
+            let name = document.getElementById("name").value;
+            let qualification = document.getElementById("qualification").value;
+            let skills = document.getElementById("skills").value;
+            let interests = document.getElementById("interests").value;
+            let goal = document.getElementById("goal").value;
+
+
+            localStorage.setItem("traineeName", name);
+            localStorage.setItem("qualification", qualification);
+            localStorage.setItem("skills", skills);
+            localStorage.setItem("interests", interests);
+            localStorage.setItem("careerGoal", goal);
+
+
+            document.getElementById("message").innerText =
+                "Profile saved successfully!";
+
+
+            setTimeout(function() {
+                window.location.href = "assessment.html";
+            }, 1000);
+
+        }
+
+    </script>
+
+</body>
+</html>
