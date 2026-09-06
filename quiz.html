@@ -12,16 +12,17 @@
 
         <h1>Skill Quiz</h1>
 
-        <p>Test your knowledge after completing the lesson.</p>
-
+        <p id="quizDescription">
+    Test your knowledge after completing the lesson.
+</p>
         <div class="card">
 
             <h3>Question 1</h3>
 
-            <p>
-                Which language is mainly used to add
-                interactivity to a web page?
-            </p>
+            <p id="question1">
+    Which language is mainly used to add
+    interactivity to a web page?
+</p>
 
             <label>
                 <input type="radio" name="q1" value="HTML">
@@ -30,21 +31,21 @@
             <br>
 
             <label>
-                <input type="radio" name="q1" value="CSS">
-                CSS
-            </label>
+    <input type="radio" name="q1" value="CSS">
+    <span class="q1css">CSS</span>
+</label>
             <br>
 
             <label>
-                <input type="radio" name="q1" value="JavaScript">
-                JavaScript
-            </label>
+    <input type="radio" name="q1" value="JavaScript">
+    <span class="q1js">JavaScript</span>
+</label>
             <br>
 
             <label>
-                <input type="radio" name="q1" value="SQL">
-                SQL
-            </label>
+    <input type="radio" name="q1" value="SQL">
+    <span class="q1sql">SQL</span>
+</label>
 
         </div>
 
@@ -53,14 +54,13 @@
 
             <h3>Question 2</h3>
 
-            <p>
-                Which language is used to style a web page?
-            </p>
-
+            <p id="question2">
+    Which language is used to style a web page?
+</p>
             <label>
-                <input type="radio" name="q2" value="HTML">
-                HTML
-            </label>
+    <input type="radio" name="q1" value="HTML">
+    <span class="q1html">HTML</span>
+</label>
             <br>
 
             <label>
@@ -83,9 +83,9 @@
         </div>
 
 
-        <button onclick="calculateScore()">
-            Submit Quiz
-        </button>
+        <button id="submitQuiz" onclick="calculateScore()">
+    Submit Quiz
+</button>
 
         <h2 id="result"></h2>
 
@@ -96,9 +96,57 @@
     </div>
 
 
-    <script>
+   <script>
 
-        function calculateScore() {
+    let selectedLanguage =
+        localStorage.getItem("selectedLanguage") || "English";
+        if (selectedLanguage === "Telugu") {
+            document.getElementById("question1").innerText =
+    "Web page ki interactivity add cheyadaniki mainly ye language use chestaru?";
+    document.getElementById("question2").innerText =
+    "Web page ni style cheyadaniki ye language use chestaru?";
+    document.querySelector(".q1html").innerText = "HTML";
+    document.querySelector(".q1css").innerText =
+    "CSS";
+    document.querySelector(".q1js").innerText =
+    "JavaScript";
+    document.querySelector(".q1sql").innerText =
+    "SQL";
+
+    document.querySelector("h1").innerText =
+        "Skill Quiz - Telugu";
+        document.getElementById("submitQuiz").innerText =
+    "Quiz Submit Cheyandi";
+    document.getElementById("quizDescription").innerText =
+    "Lesson complete chesina tarvata mee knowledge ni test chesukondi.";
+
+}
+else if (selectedLanguage === "Hindi") {
+    document.getElementById("question1").innerText =
+    "Web page mein interactivity add karne ke liye mainly kaunsi language use hoti hai?";
+    document.getElementById("question2").innerText =
+    "Web page ko style karne ke liye kaunsi language use hoti hai?";
+    document.querySelector(".q1html").innerText = "HTML";
+    document.querySelector(".q1css").innerText =
+    "CSS";
+    document.querySelector(".q1js").innerText =
+    "JavaScript";
+    document.querySelector(".q1sql").innerText =
+    "SQL";
+
+
+    document.querySelector("h1").innerText =
+        "Skill Quiz - Hindi";
+        document.getElementById("submitQuiz").innerText =
+    "Quiz Submit Karein";
+    document.getElementById("quizDescription").innerText =
+    "Lesson complete karne ke baad apni knowledge ko test karein.";
+        
+}
+
+
+
+    function calculateScore() {
 
             let score = 0;
 
@@ -123,9 +171,24 @@
             let percentage = (score / 2) * 100;
 
 
-            document.getElementById("result").innerText =
-                "Your Score: " + percentage + "%";
+            if (selectedLanguage === "Telugu") {
 
+    document.getElementById("result").innerText =
+        "Mee Score: " + percentage + "%";
+
+}
+else if (selectedLanguage === "Hindi") {
+
+    document.getElementById("result").innerText =
+        "Aapka Score: " + percentage + "%";
+
+}
+else {
+
+    document.getElementById("result").innerText =
+        "Your Score: " + percentage + "%";
+
+}
 
             localStorage.setItem("quizScore", percentage);
 

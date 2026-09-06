@@ -62,7 +62,17 @@
 
 
     <script>
+window.onload = function() {
 
+    document.getElementById("htmlLevel").value =
+        localStorage.getItem("htmlLevel") || "Beginner";
+
+    document.getElementById("cssLevel").value =
+        localStorage.getItem("cssLevel") || "Beginner";
+
+    document.getElementById("jsLevel").value =
+        localStorage.getItem("jsLevel") || "Beginner";
+};
         function saveAssessment() {
 
             let htmlLevel =
