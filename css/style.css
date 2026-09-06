@@ -164,7 +164,7 @@ footer p {
 }
 @media (max-width: 600px) {
     body {
-        font-size: 18px !important;
+        font-size: 20px !important;
     }
 
     p, li, label, span {
