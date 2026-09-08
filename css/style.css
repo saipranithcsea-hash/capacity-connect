@@ -187,4 +187,14 @@ footer p {
         font-size: 22px !important;
     }
 }
+.login-box label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+#message {
+    color: #16a34a;
+    font-weight: bold;
+    margin-top: 15px;
+}
    

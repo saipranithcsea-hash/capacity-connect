@@ -9,25 +9,30 @@
 <body>
 
     <div class="login-box">
+        <form onsubmit="saveProfile(); return false;">
 
         <h1>Capacity Connect</h1>
 
         <h2>Trainee Profile</h2>
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="Full Name" required>
+        <label for="qualification">Qualification</label>
+       <input type="text" id="qualification" placeholder="Qualification (e.g. B.Tech CSE)" required>
+       <label for="experience">Experience</label>
+       <input type="text" id="experience" placeholder="Experience (e.g. Fresher / 1 year)" required>
+       <label for="skills">Skills</label>
+        <textarea id="skills" placeholder="Skills (e.g. HTML, CSS, C)" required></textarea>
+        <label for="interests">Interests</label>
+        <input type="text" id="interests" placeholder="Interests (e.g. Web Development)" required>
+        <label for="goal">Career Goal</label>
+        <input type="text" id="goal" placeholder="Career Goal" required>
+        
 
-        <input type="text" id="name" placeholder="Full Name">
-
-        <input type="text" id="qualification" placeholder="Qualification">
-
-        <input type="text" id="skills" placeholder="Skills">
-
-        <input type="text" id="interests" placeholder="Interests">
-
-        <input type="text" id="goal" placeholder="Career Goal">
-
-        <button onclick="saveProfile()">Save Profile</button>
-
+        <button type="submit">Save Profile</button>
+        <br><br>
+<a href="index.html" class="start-button">Back to Home</a>
         <p id="message"></p>
-
+        </form>
     </div>
 
 
@@ -35,16 +40,18 @@
 
         function saveProfile() {
 
-            let name = document.getElementById("name").value;
-            let qualification = document.getElementById("qualification").value;
-            let skills = document.getElementById("skills").value;
-            let interests = document.getElementById("interests").value;
-            let goal = document.getElementById("goal").value;
+            let name = document.getElementById("name").value.trim();
+            let qualification = document.getElementById("qualification").value.trim();
+            let skills = document.getElementById("skills").value.trim();
+            let experience = document.getElementById("experience").value.trim();
+            let interests = document.getElementById("interests").value.trim();
+            let goal = document.getElementById("goal").value.trim();
 
 
             localStorage.setItem("traineeName", name);
             localStorage.setItem("qualification", qualification);
             localStorage.setItem("skills", skills);
+            localStorage.setItem("experience", experience);
             localStorage.setItem("interests", interests);
             localStorage.setItem("careerGoal", goal);
 

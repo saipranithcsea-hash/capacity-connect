@@ -22,6 +22,7 @@
     <p><strong>Qualification:</strong>
         <span id="qualification">-</span>
     </p>
+    <p><strong>Experience:</strong> <span id="experience">-</span></p>
 
     <p><strong>Skills:</strong>
         <span id="skills">-</span>
@@ -129,6 +130,8 @@
 
     document.getElementById("qualification").innerText =
         localStorage.getItem("qualification") || "-";
+        document.getElementById("experience").innerText =
+    localStorage.getItem("experience") || "-";
 
     document.getElementById("skills").innerText =
         localStorage.getItem("skills") || "-";
