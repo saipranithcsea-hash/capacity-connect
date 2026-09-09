@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Trainer Dashboard - Capacity Connect</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Capacity Connect</h1>
+
+        <h2>Trainer Dashboard</h2>
+
+        <p>Welcome, Trainer!</p>
+
+        <h2>Session Requests</h2>
+
+        <div class="card">
+
+            <h3>JavaScript Training Request</h3>
+
+            <p>
+                <strong>Trainee:</strong> Student
+            </p>
+
+            <p>
+                <strong>Skill:</strong> JavaScript
+            </p>
+
+           <p>
+    <strong>Status:</strong>
+    <span id="requestStatus">Pending</span>
+</p>
+
+            <button type="button" onclick="acceptRequest()">
+    Accept
+</button>
+
+<button type="button" onclick="rejectRequest()">
+    Reject
+</button>
+
+<p id="requestMessage"></p>
+<div id="sessionSection" style="display: none;">
+
+    <h3>Set Session Time</h3>
+
+    <label for="sessionDate">Session Date</label>
+
+    <input type="date" id="sessionDate">
+
+    <label for="sessionTime">Session Time</label>
+
+    <select id="sessionTime">
+    <option value="">Select Time</option>
+    <option value="09:00 AM">09:00 AM</option>
+    <option value="10:00 AM">10:00 AM</option>
+    <option value="11:00 AM">11:00 AM</option>
+    <option value="12:00 PM">12:00 PM</option>
+    <option value="01:00 PM">01:00 PM</option>
+    <option value="02:00 PM">02:00 PM</option>
+    <option value="03:00 PM">03:00 PM</option>
+    <option value="04:00 PM">04:00 PM</option>
+    <option value="05:00 PM">05:00 PM</option>
+</select>
+    <br><br>
+
+    <button type="button" onclick="confirmSession()">
+        Confirm Session
+    </button>
+
+    <p id="sessionMessage"></p>
+
+</div>
+
+        </div>
+
+        <br>
+
+        <a href="index.html" class="start-button">
+            Back to Home
+        </a>
+
+    </div>
+<script>
+
+    function acceptRequest() {
+        document.getElementById("requestStatus").innerText = "Accepted";
+
+        document.getElementById("requestMessage").innerText =
+            "Session request accepted. Please select a session time.";
+
+        document.getElementById("sessionSection").style.display =
+            "block";
+
+    }
+
+
+    function rejectRequest() {
+        document.getElementById("requestStatus").innerText = "Rejected";
+
+        document.getElementById("requestMessage").innerText =
+            "Session request rejected.";
+
+        document.getElementById("sessionSection").style.display =
+            "none";
+
+    }
+
+
+    function confirmSession() {
+
+        let date =
+            document.getElementById("sessionDate").value;
+
+        let time =
+            document.getElementById("sessionTime").value;
+
+
+        if (!date || !time) {
+
+            document.getElementById("sessionMessage").innerText =
+                "Please select both date and time.";
+
+            return;
+        }
+
+
+        document.getElementById("sessionMessage").innerText =
+            "Session confirmed for " + date + " at " + time + ".";
+
+    }
+
+</script>
+</body>
+
+</html>

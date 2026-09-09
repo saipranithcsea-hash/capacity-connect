@@ -1,28 +1,53 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Capacity Connect</title>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
     <div class="login-box">
-        <form action="trainee.html">
 
         <h1>Capacity Connect</h1>
-        <h2>Login</h2>
-        <label for="email">Email</label>
-       <input type="email" id="email" placeholder="Email" required>
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Password" required>
 
-        <button type="submit" class="start-button">Login</button>
-        <p>New user? <a href="trainee.html">Create Trainee Profile</a></p>
-        </form> 
+        <h2>Login</h2>
+
+        <p>Select your role to continue</p>
+
+        <button type="button" class="start-button"
+            onclick="window.location.href='trainee-login.html'">
+            Trainee Login
+        </button>
+
+        <br><br>
+
+        <button type="button" class="start-button"
+            onclick="window.location.href='trainer-login.html'">
+            Trainer Login
+        </button>
+
+        <br><br>
+
+        <button type="button" class="start-button"
+            onclick="window.location.href='admin.html'">
+            Admin Login
+        </button>
+
+        <p>
+            New trainee?
+            <a href="trainee.html">Create Trainee Profile</a>
+        </p>
+
+        <p>
+            <a href="index.html">← Back to Home</a>
+        </p>
 
     </div>
 
 </body>
+
 </html>

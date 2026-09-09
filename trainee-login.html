@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainee Login - Capacity Connect</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <h1>Capacity Connect</h1>
+
+        <h2>Trainee Login</h2>
+
+        <form id="traineeLoginForm">
+
+            <label for="email">Email</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Trainee Email"
+                required
+            >
+
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Trainee Password"
+                required
+            >
+
+            <button type="submit" class="start-button">
+                Trainee Login
+            </button>
+
+            <p id="message"></p>
+
+        </form>
+
+        <p>
+            New trainee?
+            <a href="trainee.html">Create Trainee Profile</a>
+        </p>
+
+        <p>
+            <a href="login.html">← Back to Role Selection</a>
+        </p>
+
+    </div>
+
+    <script>
+
+        document
+            .getElementById("traineeLoginForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                document.getElementById("message").innerText =
+                    "Trainee login will be connected to Firebase.";
+
+            });
+
+    </script>
+
+</body>
+
+</html>
