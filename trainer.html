@@ -62,33 +62,90 @@
     </div>
 
 
-    <script>
+    <script type="module">
 
-        let jsLevel =
-            localStorage.getItem("jsLevel") || "Beginner";
+    import { db } from "./firebase.js";
 
-
-        if (jsLevel === "Beginner") {
-
-            document.getElementById("trainerMessage").innerText =
-                "Recommended trainer based on your JavaScript skill gap.";
-
-        } else {
-
-            document.getElementById("trainerMessage").innerText =
-                "Here is a suitable Web Development trainer.";
-
-        }
+    import {
+        collection,
+        addDoc,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-        function requestSession() {
+    let jsLevel =
+        localStorage.getItem("jsLevel") || "Beginner";
 
-            document.getElementById("message").innerText =
+
+    if (jsLevel === "Beginner") {
+
+        document.getElementById("trainerMessage").innerText =
+            "Recommended trainer based on your JavaScript skill gap.";
+
+    } else {
+
+        document.getElementById("trainerMessage").innerText =
+            "Here is a suitable Web Development trainer.";
+
+    }
+
+
+    async function requestSession() {
+
+        const message =
+            document.getElementById("message");
+
+        const button =
+            document.querySelector("button");
+
+        try {
+
+            button.disabled = true;
+            button.innerText = "Sending...";
+
+
+            await addDoc(
+                collection(db, "sessionRequests"),
+                {
+                    trainer: "Web Development Trainer",
+                    skill: "JavaScript",
+                    status: "pending",
+                    createdAt: serverTimestamp()
+                }
+            );
+
+
+            message.innerText =
                 "Session request sent successfully!";
 
+            button.innerText =
+                "Request Sent";
+
+
+        } catch (error) {
+
+            console.error(
+                "Session request failed:",
+                error
+            );
+
+            message.innerText =
+                "Failed to send session request. Please try again.";
+
+            button.disabled = false;
+            button.innerText =
+                "Request Session";
+
         }
 
-    </script>
+    }
+
+
+    document
+        .querySelector("button")
+        .addEventListener("click", requestSession);
+
+</script>
 
 </body>
 
