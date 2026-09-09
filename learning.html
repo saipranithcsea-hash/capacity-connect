@@ -15,51 +15,80 @@
 
         <div class="card">
 
-            <h3 id="courseTitle">JavaScript Basics</h3>
+    <h3 id="courseTitle">JavaScript Basics</h3>
 
-<p id="courseText">
-    Learn JavaScript fundamentals step by step.
-</p>
-            <p><strong>Choose Language:</strong></p>
+    <p id="courseText">
+        Learn JavaScript fundamentals step by step.
+    </p>
 
-            <button onclick="changeLanguage('English')">
-                English
-            </button>
+    <p><strong>Choose Language:</strong></p>
 
-            <button onclick="changeLanguage('Telugu')">
-                Telugu
-            </button>
+    <button onclick="changeLanguage('English')">
+        English
+    </button>
 
-            <button onclick="changeLanguage('Hindi')">
-                Hindi
-            </button>
+    <button onclick="changeLanguage('Telugu')">
+        Telugu
+    </button>
 
-            <br><br>
+    <button onclick="changeLanguage('Hindi')">
+        Hindi
+    </button>
 
-            <h3 id="lessonTitle">
-                JavaScript Basics - English
-            </h3>
+    <br><br>
 
-            <p id="lessonText">
-                Learn the fundamentals of JavaScript.
-            </p>
+    <h3 id="lessonTitle">
+        JavaScript Basics - English
+    </h3>
 
-            <a href="quiz.html" class="start-button">
-                Start Quiz
-            </a>
+    <div id="lessonContent">
 
-        </div>
+    <h4>What you will learn</h4>
 
+    <p id="lessonText">
+        JavaScript is a programming language used to make web pages interactive.
+    </p>
 
+    <h4>Key Concepts</h4>
+
+    <ul id="lessonPoints">
+        <li>Variables store information.</li>
+        <li>JavaScript can respond to user actions.</li>
+        <li>Functions help organize reusable code.</li>
+    </ul>
+
+    <h4>Example</h4>
+
+    <pre id="codeExample">let name = "Student";
+console.log(name);</pre>
+
+</div>
+
+    <p id="progressMessage">
+        Lesson Progress: Not Completed
+    </p>
+
+    <button onclick="completeLesson()">
+        Mark Lesson Complete
+    </button>
+
+    <br><br>
+
+    <a href="quiz.html" class="start-button">
+        Start Quiz
+    </a>
+
+</div>
         <div class="card">
 
-            <h3>Web Development</h3>
+    <h3>Additional Learning Resources</h3>
 
-            <p>
-                Learn HTML, CSS and basic web development.
-            </p>
+    <p>
+        Explore related topics such as HTML, CSS and JavaScript
+        to strengthen your web development skills.
+    </p>
 
-        </div>
+</div>
 
 
         <p>
@@ -72,32 +101,58 @@
 
 
     <script>
-        let htmlLevel =
-    localStorage.getItem("htmlLevel") || "Beginner";
 
-let cssLevel =
-    localStorage.getItem("cssLevel") || "Beginner";
+    let htmlLevel =
+        localStorage.getItem("htmlLevel") || "Beginner";
 
-let jsLevel =
-    localStorage.getItem("jsLevel") || "Beginner";
+    let cssLevel =
+        localStorage.getItem("cssLevel") || "Beginner";
 
-let courseTitle =
-    document.getElementById("courseTitle");
+    let jsLevel =
+        localStorage.getItem("jsLevel") || "Beginner";
 
-let courseText =
-    document.getElementById("courseText");
 
-if (jsLevel === "Beginner") {
+    let courseTitle =
+        document.getElementById("courseTitle");
 
-    courseTitle.innerText =
-        "JavaScript Basics";
+    let courseText =
+        document.getElementById("courseText");
 
-    courseText.innerText =
-        "Learn JavaScript fundamentals step by step.";
+    let lessonTitle =
+        document.getElementById("lessonTitle");
 
-}
+    let lessonText =
+        document.getElementById("lessonText");
 
-else if (htmlLevel === "Beginner") {
+
+    let selectedCourse = "JavaScript Basics";
+
+
+    if (jsLevel === "Beginner") {
+
+        selectedCourse = "JavaScript Basics";
+
+        courseTitle.innerText =
+            "JavaScript Basics";
+
+        courseText.innerText =
+            "Learn JavaScript fundamentals step by step.";
+            document.getElementById("lessonText").innerText =
+    "JavaScript is a programming language used to make web pages interactive.";
+
+document.getElementById("lessonPoints").innerHTML =
+    "<li>Variables store information.</li>" +
+    "<li>JavaScript can respond to user actions.</li>" +
+    "<li>Functions help organize reusable code.</li>";
+
+document.getElementById("codeExample").innerText =
+    'let name = "Student";\nconsole.log(name);';
+
+    }
+
+   else if (htmlLevel === "Beginner") {
+
+    selectedCourse = "HTML Fundamentals";
 
     courseTitle.innerText =
         "HTML Fundamentals";
@@ -105,9 +160,22 @@ else if (htmlLevel === "Beginner") {
     courseText.innerText =
         "Learn HTML fundamentals step by step.";
 
+    document.getElementById("lessonText").innerText =
+        "HTML is the standard language used to create the structure of web pages.";
+
+    document.getElementById("lessonPoints").innerHTML =
+        "<li>HTML uses elements to structure content.</li>" +
+        "<li>Headings, paragraphs and links are common HTML elements.</li>" +
+        "<li>HTML provides the basic structure of a web page.</li>";
+
+    document.getElementById("codeExample").innerText =
+        "<h1>Hello World</h1>\n<p>Welcome to my webpage.</p>";
+
 }
 
-else if (cssLevel === "Beginner") {
+    else if (cssLevel === "Beginner") {
+
+    selectedCourse = "CSS Fundamentals";
 
     courseTitle.innerText =
         "CSS Fundamentals";
@@ -115,63 +183,258 @@ else if (cssLevel === "Beginner") {
     courseText.innerText =
         "Learn CSS fundamentals step by step.";
 
+    document.getElementById("lessonText").innerText =
+        "CSS is used to style and design the appearance of web pages.";
+
+    document.getElementById("lessonPoints").innerHTML =
+        "<li>CSS controls colors, fonts and spacing.</li>" +
+        "<li>CSS can change the layout of a web page.</li>" +
+        "<li>CSS makes web pages more attractive and readable.</li>";
+
+    document.getElementById("codeExample").innerText =
+        "h1 {\n    color: blue;\n    font-size: 30px;\n}";
+
 }
 
-else {
+    else {
 
-    courseTitle.innerText =
-        "Advanced Web Development";
+        selectedCourse = "Advanced Web Development";
 
-    courseText.innerText =
-        "Continue developing your web development skills.";
+        courseTitle.innerText =
+            "Advanced Web Development";
+
+        courseText.innerText =
+            "Continue developing your web development skills.";
+
+    }
+
+function getLessonPoints(language) {
+
+    if (selectedCourse === "JavaScript Basics") {
+
+        if (language === "English") {
+            return "<li>Variables store information.</li>" +
+                   "<li>JavaScript can respond to user actions.</li>" +
+                   "<li>Functions help organize reusable code.</li>";
+        }
+
+        if (language === "Telugu") {
+            return "<li>Variables information ni store chestayi.</li>" +
+                   "<li>JavaScript user actions ki respond avvagaladu.</li>" +
+                   "<li>Functions reusable code ni organize cheyadaniki help chestayi.</li>";
+        }
+
+        if (language === "Hindi") {
+            return "<li>Variables information store karte hain.</li>" +
+                   "<li>JavaScript user actions ka response de sakta hai.</li>" +
+                   "<li>Functions reusable code ko organize karne mein help karte hain.</li>";
+        }
+    }
+
+
+    if (selectedCourse === "HTML Fundamentals") {
+
+        if (language === "English") {
+            return "<li>HTML uses elements to structure content.</li>" +
+                   "<li>Headings, paragraphs and links are common HTML elements.</li>" +
+                   "<li>HTML provides the basic structure of a web page.</li>";
+        }
+
+        if (language === "Telugu") {
+            return "<li>HTML elements content ni structure cheyadaniki use chestaru.</li>" +
+                   "<li>Headings, paragraphs mariyu links common HTML elements.</li>" +
+                   "<li>HTML web page ki basic structure istundi.</li>";
+        }
+
+        if (language === "Hindi") {
+            return "<li>HTML elements content ko structure karte hain.</li>" +
+                   "<li>Headings, paragraphs aur links common HTML elements hain.</li>" +
+                   "<li>HTML web page ka basic structure deta hai.</li>";
+        }
+    }
+
+
+    if (selectedCourse === "CSS Fundamentals") {
+
+        if (language === "English") {
+            return "<li>CSS controls colors, fonts and spacing.</li>" +
+                   "<li>CSS can change the layout of a web page.</li>" +
+                   "<li>CSS makes web pages more attractive and readable.</li>";
+        }
+
+        if (language === "Telugu") {
+            return "<li>CSS colors, fonts mariyu spacing ni control chestundi.</li>" +
+                   "<li>CSS web page layout ni change cheyagaladu.</li>" +
+                   "<li>CSS web pages ni attractive mariyu readable ga chestundi.</li>";
+        }
+
+        if (language === "Hindi") {
+            return "<li>CSS colors, fonts aur spacing ko control karti hai.</li>" +
+                   "<li>CSS web page ka layout change kar sakti hai.</li>" +
+                   "<li>CSS web pages ko attractive aur readable banati hai.</li>";
+        }
+    }
+
+
+    return "<li>Continue learning to improve your skills.</li>";
 
 }
 
-        function changeLanguage(language) {
-        localStorage.setItem("selectedLanguage", language);
 
-            let title =
-                document.getElementById("lessonTitle");
+function getCodeExample() {
 
-            let text =
-                document.getElementById("lessonText");
+    if (selectedCourse === "JavaScript Basics") {
 
+        return 'let name = "Student";\nconsole.log(name);';
 
-            if (language === "English") {
-
-                title.innerText =
-                    "JavaScript Basics - English";
-
-                text.innerText =
-                    "Learn the fundamentals of JavaScript.";
-
-            }
+    }
 
 
-            else if (language === "Telugu") {
+    if (selectedCourse === "HTML Fundamentals") {
 
-                title.innerText =
-                    "JavaScript Basics - Telugu";
+        return "<h1>Hello World</h1>\n<p>Welcome to my webpage.</p>";
 
-                text.innerText =
-                    "JavaScript yokka prathamikalanu nerchukondi.";
-
-            }
+    }
 
 
-            else if (language === "Hindi") {
+    if (selectedCourse === "CSS Fundamentals") {
 
-                title.innerText =
-                    "JavaScript Basics - Hindi";
+        return "h1 {\n    color: blue;\n    font-size: 30px;\n}";
 
-                text.innerText =
-                    "JavaScript ki mool baatein seekhein.";
+    }
 
-            }
+
+    return "Keep learning and practicing.";
+
+}
+    function changeLanguage(language) {
+        function getLessonText(language) {
+
+    if (selectedCourse === "JavaScript Basics") {
+
+        if (language === "English") {
+            return "JavaScript is a programming language used to make web pages interactive.";
+        }
+
+        if (language === "Telugu") {
+            return "JavaScript anedi web pages ni interactive ga marchadaniki upayoginche programming language.";
+        }
+
+        if (language === "Hindi") {
+            return "JavaScript ek programming language hai jo web pages ko interactive banane ke liye use hoti hai.";
+        }
+    }
+
+
+    if (selectedCourse === "HTML Fundamentals") {
+
+        if (language === "English") {
+            return "HTML is the standard language used to create the structure of web pages.";
+        }
+
+        if (language === "Telugu") {
+            return "HTML anedi web pages yokka structure ni create cheyadaniki upayoginche standard language.";
+        }
+
+        if (language === "Hindi") {
+            return "HTML ek standard language hai jo web pages ka structure banane ke liye use hoti hai.";
+        }
+    }
+
+
+    if (selectedCourse === "CSS Fundamentals") {
+
+        if (language === "English") {
+            return "CSS is used to style and design the appearance of web pages.";
+        }
+
+        if (language === "Telugu") {
+            return "CSS anedi web pages yokka appearance ni style mariyu design cheyadaniki upayogistaru.";
+        }
+
+        if (language === "Hindi") {
+            return "CSS web pages ke appearance ko style aur design karne ke liye use hoti hai.";
+        }
+    }
+
+
+    return "Continue learning to improve your skills.";
+
+}
+
+        localStorage.setItem(
+            "selectedLanguage",
+            language
+        );
+
+        if (language === "English") {
+
+            lessonTitle.innerText =
+                selectedCourse + " - English";
+
+           lessonText.innerText =
+    getLessonText("English");
+    document.getElementById("lessonPoints").innerHTML =
+    getLessonPoints("English");
+
+document.getElementById("codeExample").innerText =
+    getCodeExample();
+        }
+
+        else if (language === "Telugu") {
+
+            lessonTitle.innerText =
+                selectedCourse + " - Telugu";
+
+            lessonText.innerText =
+    getLessonText("Telugu");
+    document.getElementById("lessonPoints").innerHTML =
+    getLessonPoints("Telugu");
+
+document.getElementById("codeExample").innerText =
+    getCodeExample();
 
         }
 
-    </script>
+        else if (language === "Hindi") {
+
+            lessonTitle.innerText =
+                selectedCourse + " - Hindi";
+
+           lessonText.innerText =
+    getLessonText("Hindi");
+    document.getElementById("lessonPoints").innerHTML =
+    getLessonPoints("Hindi");
+
+document.getElementById("codeExample").innerText =
+    getCodeExample();
+
+        }
+
+    }
+
+
+    function completeLesson() {
+
+        localStorage.setItem(
+            "lessonCompleted",
+            "true"
+        );
+
+        document.getElementById("progressMessage").innerText =
+            "Lesson Progress: Completed ✓";
+
+    }
+
+
+    let savedLanguage =
+    localStorage.getItem("selectedLanguage");
+
+if (savedLanguage) {
+    changeLanguage(savedLanguage);
+}
+
+</script>
 
 </body>
 
