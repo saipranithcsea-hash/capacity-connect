@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trainer Login - Capacity Connect</title>
+    <title>Admin Login - Capacity Connect</title>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,24 +14,24 @@
 
         <h1>Capacity Connect</h1>
 
-        <h2>Trainer Login</h2>
+        <h2>Admin Login</h2>
 
-        <p>Authorized trainer account</p>
+        <p>Authorized organization account</p>
 
-        <form onsubmit="trainerLogin(event)">
+        <form onsubmit="adminLogin(event)">
 
-            <label for="trainerEmail">Trainer Email</label>
+            <label for="adminEmail">Admin Email</label>
             <input
                 type="email"
-                id="trainerEmail"
-                placeholder="Enter trainer email"
+                id="adminEmail"
+                placeholder="Enter admin email"
                 required
             >
 
-            <label for="trainerPassword">Password</label>
+            <label for="adminPassword">Password</label>
             <input
                 type="password"
-                id="trainerPassword"
+                id="adminPassword"
                 placeholder="Enter password"
                 required
             >
@@ -53,11 +53,11 @@
 
     <script>
 
-        function trainerLogin(event) {
+        function adminLogin(event) {
 
             event.preventDefault();
 
-            window.location.href = "trainer-dashboard.html";
+            window.location.href = "admin.html";
 
         }
 
