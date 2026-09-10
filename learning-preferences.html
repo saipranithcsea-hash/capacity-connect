@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Preferences - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-box recommendation-box">
+
+        <h1>Choose Your Learning Preferences</h1>
+
+        <p>
+            You selected:
+            <strong id="selectedCourse">Course</strong>
+        </p>
+
+        <p>
+            Tell us how you prefer to learn. We will use this to recommend
+            the trainer who suits you best.
+        </p>
+
+        <div class="card preference-card">
+
+            <h3>1. Preferred Teaching Language</h3>
+
+            <select id="preferredLanguage">
+                <option value="English">English</option>
+                <option value="Telugu">Telugu</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Hindi + English">Hindi + English</option>
+            </select>
+
+            <h3>2. Preferred Learning Pace</h3>
+
+            <label class="preference-option">
+                <input type="radio" name="learningPace" value="Fast and Crisp">
+                Fast and crisp
+            </label>
+
+            <label class="preference-option">
+                <input type="radio" name="learningPace" value="Balanced">
+                Balanced
+            </label>
+
+            <label class="preference-option">
+                <input type="radio" name="learningPace" value="Slow and Detailed">
+                Slow and detailed
+            </label>
+
+            <h3>3. Preferred Teaching Style</h3>
+
+            <label class="preference-option">
+                <input type="radio" name="teachingStyle" value="Practical and Project Based">
+                Practical and project-based
+            </label>
+
+            <label class="preference-option">
+                <input type="radio" name="teachingStyle" value="Simple Step by Step">
+                Simple step-by-step explanations
+            </label>
+
+            <label class="preference-option">
+                <input type="radio" name="teachingStyle" value="Story Based and Engaging">
+                Story-based and engaging
+            </label>
+
+            <button type="button" onclick="savePreferences()">
+                Find My Best Trainer
+            </button>
+
+            <p id="message"></p>
+
+        </div>
+
+        <p>
+            <a href="recommendation.html">&larr; Back to Recommendations</a>
+        </p>
+
+    </div>
+
+    <script>
+        const courseNames = {
+            "HTML": "HTML Fundamentals",
+            "CSS": "CSS Fundamentals",
+            "JavaScript": "JavaScript Basics",
+            "Web Development": "Advanced Web Development"
+        };
+
+        const selectedCourse =
+            localStorage.getItem("selectedLearningSkill") || "JavaScript";
+
+        document.getElementById("selectedCourse").innerText =
+            courseNames[selectedCourse] || selectedCourse;
+
+        function savePreferences() {
+            const language =
+                document.getElementById("preferredLanguage").value;
+
+            const selectedPace = document.querySelector(
+                'input[name="learningPace"]:checked'
+            );
+
+            const selectedStyle = document.querySelector(
+                'input[name="teachingStyle"]:checked'
+            );
+
+            if (!selectedPace || !selectedStyle) {
+                document.getElementById("message").innerText =
+                    "Please choose your learning pace and teaching style.";
+
+                return;
+            }
+
+            const preferences = {
+                course: selectedCourse,
+                language: language,
+                pace: selectedPace.value,
+                style: selectedStyle.value
+            };
+
+            localStorage.setItem(
+                "learningPreferences",
+                JSON.stringify(preferences)
+            );
+
+            document.getElementById("message").innerText =
+                "Your preferences have been saved.";
+
+            setTimeout(function() {
+                window.location.href = "trainer-recommendation.html";
+            }, 800);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Course Workspace - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="workspace-page">
+
+        <section class="workspace-hero">
+            <div>
+                <p class="workspace-eyebrow">YOUR PERSONAL LEARNING SPACE</p>
+                <h1 id="workspaceCourseTitle">My Course</h1>
+                <p id="workspaceSubtitle">
+                    Learn at your pace with your selected trainer.
+                </p>
+            </div>
+
+            <div class="workspace-trainer">
+                <div class="workspace-avatar">
+                    <svg viewBox="0 0 64 64" aria-hidden="true">
+                        <circle cx="32" cy="32" r="32" fill="#dbeafe"></circle>
+                        <circle cx="32" cy="24" r="10" fill="#60a5fa"></circle>
+                        <path d="M14 57c2-11 10-17 18-17s16 6 18 17" fill="#60a5fa"></path>
+                    </svg>
+                </div>
+
+                <div>
+                    <span>Your Trainer</span>
+                    <strong id="trainerName">-</strong>
+                    <small id="trainerStyle">-</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="workspace-progress-card">
+            <div>
+                <p class="workspace-progress-label">COURSE PROGRESS</p>
+                <h2><span id="progressPercent">0</span>% completed</h2>
+            </div>
+
+            <div class="workspace-progress-bar">
+                <div id="progressFill"></div>
+            </div>
+
+            <p id="progressMessage">
+                Complete lectures, notes, and assignments to track your progress.
+            </p>
+        </section>
+
+        <nav class="workspace-tabs">
+            <button class="workspace-tab active" onclick="showSection('lectures', this)">
+                Lectures
+            </button>
+
+            <button class="workspace-tab" onclick="showSection('notes', this)">
+                Notes
+            </button>
+
+            <button class="workspace-tab" onclick="showSection('assignments', this)">
+                Assignments
+            </button>
+
+            <button class="workspace-tab" onclick="showSection('quiz', this)">
+                Quiz
+            </button>
+        </nav>
+
+        <section id="lectures" class="workspace-section active-section">
+            <div class="workspace-section-heading">
+                <div>
+                    <p class="section-kicker">LEARNING MATERIAL</p>
+                    <h2>Course Lectures</h2>
+                </div>
+
+                <span id="lectureCount" class="content-count">0 lessons</span>
+            </div>
+
+            <div id="lectureList" class="workspace-content-grid"></div>
+        </section>
+
+        <section id="notes" class="workspace-section">
+            <div class="workspace-section-heading">
+                <div>
+                    <p class="section-kicker">QUICK REVISION</p>
+                    <h2>Study Notes</h2>
+                </div>
+
+                <span class="content-count">Trainer notes</span>
+            </div>
+
+            <div id="notesList" class="workspace-content-grid"></div>
+        </section>
+
+        <section id="assignments" class="workspace-section">
+            <div class="workspace-section-heading">
+                <div>
+                    <p class="section-kicker">PRACTICE</p>
+                    <h2>Assignments</h2>
+                </div>
+
+                <span class="content-count">Apply your skills</span>
+            </div>
+
+            <div id="assignmentList" class="workspace-content-grid"></div>
+        </section>
+
+        <section id="quiz" class="workspace-section">
+            <div class="quiz-panel">
+                <div class="quiz-icon">?</div>
+
+                <div>
+                    <p class="section-kicker">KNOWLEDGE CHECK</p>
+                    <h2>Ready to test your learning?</h2>
+                    <p>Take a short quiz after revising your lectures and notes.</p>
+                </div>
+
+                <a href="quiz.html" class="workspace-primary-button">
+                    Start Quiz
+                </a>
+            </div>
+        </section>
+
+        <div class="workspace-navigation">
+            <a href="trainer-recommendation.html">&larr; Change Trainer</a>
+            <a href="recommendation.html">&larr; Back to Recommendations</a>
+        </div>
+
+    </main>
+
+    <div id="learningModal" class="learning-modal">
+        <div class="learning-modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+
+            <p id="modalType" class="section-kicker"></p>
+            <h2 id="modalTitle"></h2>
+            <p id="modalText"></p>
+
+            <a
+                id="modalResourceLink"
+                class="workspace-outline-button"
+                target="_blank"
+                rel="noopener"
+                style="display: none;"
+            >
+                Open Trainer Resource
+            </a>
+
+            <button class="workspace-primary-button" onclick="markCurrentActivityComplete()">
+                Mark as Completed
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+
+        import {
+            collection,
+            doc,
+            getDoc,
+            getDocs,
+            serverTimestamp,
+            setDoc
+        } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const courseTitles = {
+            "HTML": "HTML Fundamentals",
+            "CSS": "CSS Fundamentals",
+            "JavaScript": "JavaScript Basics",
+            "Web Development": "Advanced Web Development"
+        };
+
+        const starterContent = {
+            "HTML": {
+                lectures: [
+                    ["Introduction to HTML", "Learn HTML, tags, and webpage structure."],
+                    ["Text, Links and Images", "Create content with headings, links, and images."],
+                    ["Forms and Semantic HTML", "Build forms and use meaningful page structure."]
+                ],
+                notes: [
+                    ["HTML Document Structure", "Review common tags and document layout."],
+                    ["Links, Images and Lists", "Review the building blocks of a webpage."],
+                    ["Forms and Inputs", "Review form controls and semantic elements."]
+                ],
+                assignments: [
+                    ["Create Your Personal Profile Page", "Build a profile page with skills, image, and contact form."]
+                ]
+            },
+
+            "CSS": {
+                lectures: [
+                    ["Introduction to CSS", "Learn selectors, colours, fonts, and box model."],
+                    ["Layouts with Flexbox", "Build responsive layouts with flexbox."],
+                    ["Responsive Web Design", "Use media queries for mobile-friendly pages."]
+                ],
+                notes: [
+                    ["CSS Selectors and Properties", "Review CSS syntax and common properties."],
+                    ["Box Model and Spacing", "Review margin, padding, and layout spacing."],
+                    ["Responsive Design", "Review flexbox and media queries."]
+                ],
+                assignments: [
+                    ["Style a Responsive Landing Page", "Design a responsive page using modern CSS."]
+                ]
+            },
+
+            "JavaScript": {
+                lectures: [
+                    ["JavaScript Fundamentals", "Learn variables, data types, and operators."],
+                    ["Conditions and Functions", "Add logic with conditions, loops, and functions."],
+                    ["DOM and Events", "Create interactive webpages with JavaScript."]
+                ],
+                notes: [
+                    ["Variables and Data Types", "Review the foundations of JavaScript."],
+                    ["Conditions and Functions", "Review program logic and reusable code."],
+                    ["DOM and Events", "Review how webpages react to user actions."]
+                ],
+                assignments: [
+                    ["Build an Interactive To-Do List", "Create a to-do list with add and remove functionality."]
+                ]
+            },
+
+            "Web Development": {
+                lectures: [
+                    ["Planning a Web Project", "Plan pages, content, and user flow."],
+                    ["Building the User Interface", "Combine HTML and CSS for a responsive interface."],
+                    ["Adding Interactivity", "Use JavaScript to complete a web project."]
+                ],
+                notes: [
+                    ["Project Planning Checklist", "Review a practical project plan."],
+                    ["HTML, CSS and JavaScript", "Review how core web technologies work together."],
+                    ["Testing a Website", "Review practical testing and improvements."]
+                ],
+                assignments: [
+                    ["Build a Complete Mini Website", "Create a responsive website using HTML, CSS, and JavaScript."]
+                ]
+            }
+        };
+
+        const selectedTrainer = JSON.parse(
+            localStorage.getItem("selectedTrainer") || "null"
+        );
+
+        const preferences = JSON.parse(
+            localStorage.getItem("learningPreferences") || "null"
+        );
+
+        let selectedCourse = preferences
+            ? preferences.course
+            : localStorage.getItem("selectedLearningSkill") || "JavaScript";
+
+        let courseItems = {
+            lectures: [],
+            notes: [],
+            assignments: []
+        };
+
+        let currentActivityKey = "";
+
+        const traineeName =
+            localStorage.getItem("traineeName") || "Trainee";
+
+        let traineeId =
+            localStorage.getItem("traineeId");
+
+        if (!traineeId) {
+            traineeId =
+                "trainee-" +
+                Date.now() +
+                "-" +
+                Math.random().toString(16).slice(2);
+
+            localStorage.setItem("traineeId", traineeId);
+        }
+
+        if (!selectedTrainer) {
+            window.location.href = "trainer-recommendation.html";
+        } else {
+            loadWorkspace();
+        }
+
+        async function loadWorkspace() {
+            if (!starterContent[selectedCourse]) {
+                selectedCourse = "JavaScript";
+            }
+
+            document.getElementById("workspaceCourseTitle").innerText =
+                courseTitles[selectedCourse];
+
+            document.getElementById("workspaceSubtitle").innerText =
+                "A personalised learning path with " +
+                selectedTrainer.name + ".";
+
+            document.getElementById("trainerName").innerText =
+                selectedTrainer.name;
+
+            document.getElementById("trainerStyle").innerText =
+                selectedTrainer.style + " teaching style";
+
+            await loadTrainerContent();
+
+            renderSection("lectures", "lectureList", "Lecture");
+            renderSection("notes", "notesList", "Study Note");
+            renderSection("assignments", "assignmentList", "Assignment");
+
+            await updateProgress();
+        }
+
+        async function loadTrainerContent() {
+            const contentSnapshot = await getDocs(
+                collection(db, "courseContent")
+            );
+
+            contentSnapshot.forEach(function(contentDocument) {
+                const item = contentDocument.data();
+
+                if (
+                    item.trainerId === selectedTrainer.id &&
+                    item.course === selectedCourse
+                ) {
+                    const formattedItem = {
+                        id: contentDocument.id,
+                        title: item.title,
+                        description: item.description,
+                        link: item.link || "",
+                        published: true
+                    };
+
+                    if (item.type === "Lecture") {
+                        courseItems.lectures.push(formattedItem);
+                    }
+
+                    if (item.type === "Note") {
+                        courseItems.notes.push(formattedItem);
+                    }
+
+                    if (item.type === "Assignment") {
+                        courseItems.assignments.push(formattedItem);
+                    }
+                }
+            });
+
+            useStarterContentIfNeeded("lectures");
+            useStarterContentIfNeeded("notes");
+            useStarterContentIfNeeded("assignments");
+        }
+
+        function useStarterContentIfNeeded(type) {
+            if (courseItems[type].length > 0) {
+                return;
+            }
+
+            courseItems[type] = starterContent[selectedCourse][type].map(
+                function(item, index) {
+                    return {
+                        id: "starter-" + type + "-" + index,
+                        title: item[0],
+                        description: item[1],
+                        link: "",
+                        published: false
+                    };
+                }
+            );
+        }
+
+        function renderSection(type, containerId, displayType) {
+            const container = document.getElementById(containerId);
+
+            container.innerHTML = "";
+
+            if (type === "lectures") {
+                document.getElementById("lectureCount").innerText =
+                    courseItems[type].length + " lessons";
+            }
+
+            courseItems[type].forEach(function(item, index) {
+                const card = document.createElement("article");
+
+                card.className = "workspace-content-card";
+
+                const number = document.createElement("span");
+                number.className = "content-number";
+                number.textContent =
+                    type === "notes"
+                        ? "N" + (index + 1)
+                        : type === "assignments"
+                            ? "A" + (index + 1)
+                            : "0" + (index + 1);
+
+                const contentType = document.createElement("p");
+                contentType.className = "content-type";
+                contentType.textContent = displayType;
+
+                const title = document.createElement("h3");
+                title.textContent = item.title;
+
+                const description = document.createElement("p");
+                description.textContent = item.description;
+
+                card.appendChild(number);
+                card.appendChild(contentType);
+                card.appendChild(title);
+                card.appendChild(description);
+
+                if (item.published) {
+                    const published = document.createElement("span");
+                    published.className = "published-content-label";
+                    published.textContent = "Published by your trainer";
+                    card.appendChild(published);
+                }
+
+                const button = document.createElement("button");
+                button.className =
+                    type === "assignments"
+                        ? "workspace-primary-button"
+                        : "workspace-outline-button";
+
+                button.textContent =
+                    type === "lectures"
+                        ? "Open Lecture"
+                        : type === "notes"
+                            ? "Read Notes"
+                            : "View Assignment";
+
+                button.onclick = function() {
+                    openActivity(
+                        displayType,
+                        item.title,
+                        item.description,
+                        type + "-" + item.id,
+                        item.link
+                    );
+                };
+
+                card.appendChild(button);
+                container.appendChild(card);
+            });
+        }
+
+        function openActivity(type, title, text, activityKey, link) {
+            currentActivityKey = activityKey;
+
+            document.getElementById("modalType").innerText = type;
+            document.getElementById("modalTitle").innerText = title;
+            document.getElementById("modalText").innerText = text;
+
+            const resourceLink =
+                document.getElementById("modalResourceLink");
+
+            if (link) {
+                resourceLink.href = link;
+                resourceLink.style.display = "inline-block";
+            } else {
+                resourceLink.style.display = "none";
+            }
+
+            document.getElementById("learningModal").style.display = "flex";
+        }
+
+        window.closeModal = function() {
+            document.getElementById("learningModal").style.display = "none";
+        };
+
+        window.markCurrentActivityComplete = async function() {
+            const progressKey =
+                "completedActivities-" +
+                selectedCourse +
+                "-" +
+                selectedTrainer.id;
+
+            const completed = JSON.parse(
+                localStorage.getItem(progressKey) || "[]"
+            );
+
+            if (!completed.includes(currentActivityKey)) {
+                completed.push(currentActivityKey);
+
+                localStorage.setItem(
+                    progressKey,
+                    JSON.stringify(completed)
+                );
+            }
+
+            closeModal();
+            await updateProgress();
+        };
+
+        async function updateProgress() {
+            const progressKey =
+                "completedActivities-" +
+                selectedCourse +
+                "-" +
+                selectedTrainer.id;
+
+            const completed = JSON.parse(
+                localStorage.getItem(progressKey) || "[]"
+            );
+
+            const total =
+                courseItems.lectures.length +
+                courseItems.notes.length +
+                courseItems.assignments.length;
+
+            const percent = total === 0
+                ? 0
+                : Math.round((completed.length / total) * 100);
+
+            document.getElementById("progressPercent").innerText = percent;
+
+            document.getElementById("progressFill").style.width =
+                percent + "%";
+
+            document.getElementById("progressMessage").innerText =
+                percent === 0
+                    ? "Start with your first lecture to begin this course."
+                    : percent < 100
+                        ? "Great progress. Keep learning at your own pace."
+                        : "Excellent work. You have completed this learning path.";
+
+            try {
+                await saveEnrollmentProgress(percent, completed);
+            } catch (error) {
+                console.error("Could not save enrollment progress.", error);
+            }
+        }
+
+        async function saveEnrollmentProgress(percent, completedActivities) {
+            const enrollmentId =
+                traineeId +
+                "-" +
+                selectedTrainer.id +
+                "-" +
+                selectedCourse;
+
+            const enrollmentReference = doc(
+                db,
+                "enrollments",
+                enrollmentId
+            );
+
+            const existingEnrollment =
+                await getDoc(enrollmentReference);
+
+            const enrollmentData = {
+                traineeId: traineeId,
+                traineeName: traineeName,
+                trainerId: selectedTrainer.id,
+                trainerName: selectedTrainer.name,
+                course: selectedCourse,
+                progress: percent,
+                completedActivities: completedActivities,
+                updatedAt: serverTimestamp()
+            };
+
+            if (!existingEnrollment.exists()) {
+                enrollmentData.enrolledAt = serverTimestamp();
+            }
+
+            await setDoc(
+                enrollmentReference,
+                enrollmentData,
+                { merge: true }
+            );
+        }
+
+        window.showSection = function(sectionId, button) {
+            document.querySelectorAll(".workspace-section")
+                .forEach(function(section) {
+                    section.classList.remove("active-section");
+                });
+
+            document.querySelectorAll(".workspace-tab")
+                .forEach(function(tab) {
+                    tab.classList.remove("active");
+                });
+
+            document.getElementById(sectionId)
+                .classList.add("active-section");
+
+            button.classList.add("active");
+        };
+    </script>
+
+</body>
+</html>

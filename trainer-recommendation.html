@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Recommendation - Capacity Connect</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="trainer-page">
+
+        <section class="trainer-hero">
+            <div class="trainer-hero-content">
+
+                <p class="trainer-eyebrow">PERSONALIZED MENTOR MATCHING</p>
+
+                <h1>Find the right trainer for you</h1>
+
+                <p id="recommendationMessage" class="trainer-subtitle">
+                    Matching you with trainers who fit the way you learn best.
+                </p>
+
+                <div class="preference-summary">
+                    <div class="preference-summary-item">
+                        <span class="summary-label">Course</span>
+                        <strong id="courseName">-</strong>
+                    </div>
+
+                    <div class="preference-summary-item">
+                        <span class="summary-label">Language</span>
+                        <strong id="languageName">-</strong>
+                    </div>
+
+                    <div class="preference-summary-item">
+                        <span class="summary-label">Learning Pace</span>
+                        <strong id="paceName">-</strong>
+                    </div>
+
+                    <div class="preference-summary-item">
+                        <span class="summary-label">Teaching Style</span>
+                        <strong id="styleName">-</strong>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="trainer-results">
+
+            <div id="selectedTrainerMessage"></div>
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">TOP RECOMMENDATION</p>
+                    <h2>Your best trainer match</h2>
+                </div>
+            </div>
+
+            <div id="bestTrainer"></div>
+
+            <div class="section-heading other-trainers-heading">
+                <div>
+                    <p class="section-kicker">MORE OPTIONS</p>
+                    <h2>Other trainers you can choose</h2>
+                </div>
+            </div>
+
+            <div id="otherTrainers" class="trainer-grid"></div>
+
+            <div class="trainer-navigation">
+                <a href="learning-preferences.html" class="secondary-link">
+                    &larr; Change learning preferences
+                </a>
+
+                <a href="recommendation.html" class="secondary-link">
+                    &larr; Back to recommendations
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+
+        import {
+            collection,
+            getDocs,
+            query,
+            where
+        } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const courseTitles = {
+            "HTML": "HTML Fundamentals",
+            "CSS": "CSS Fundamentals",
+            "JavaScript": "JavaScript Basics",
+            "Web Development": "Advanced Web Development"
+        };
+
+        const savedPreferences =
+            localStorage.getItem("learningPreferences");
+
+        if (!savedPreferences) {
+            showMissingPreferences();
+        } else {
+            const preferences = JSON.parse(savedPreferences);
+
+            document.getElementById("courseName").innerText =
+                courseTitles[preferences.course] || preferences.course;
+
+            document.getElementById("languageName").innerText =
+                preferences.language;
+
+            document.getElementById("paceName").innerText =
+                preferences.pace;
+
+            document.getElementById("styleName").innerText =
+                preferences.style;
+
+            loadMatchingTrainers(preferences);
+        }
+
+        function showMissingPreferences() {
+            document.getElementById("recommendationMessage").innerText =
+                "Learning preferences were not found. Please choose them first.";
+
+            document.getElementById("bestTrainer").innerHTML =
+                '<div class="trainer-empty-state">' +
+                '<h3>Choose your learning preferences first</h3>' +
+                '<p>We need your preferred language, pace, and teaching style to find the right trainer.</p>' +
+                '<a href="learning-preferences.html" class="primary-action">Choose Preferences</a>' +
+                '</div>';
+        }
+
+        function calculateMatchScore(trainer, preferences) {
+            let score = 0;
+            let reasons = [];
+
+            if (trainer.language === preferences.language) {
+                score += 50;
+                reasons.push("Language match");
+            }
+
+            if (trainer.pace === preferences.pace) {
+                score += 25;
+                reasons.push("Learning pace match");
+            }
+
+            if (trainer.style === preferences.style) {
+                score += 25;
+                reasons.push("Teaching style match");
+            }
+
+            return {
+                score: score,
+                reasons: reasons
+            };
+        }
+
+        async function loadMatchingTrainers(preferences) {
+            try {
+                const trainerQuery = query(
+                    collection(db, "trainers"),
+                    where("courses", "array-contains", preferences.course)
+                );
+
+                const trainerSnapshot = await getDocs(trainerQuery);
+                let trainers = [];
+
+                trainerSnapshot.forEach(function(trainerDocument) {
+                    const trainer = trainerDocument.data();
+
+                    if (trainer.language !== preferences.language) {
+                        return;
+                    }
+
+                    const matchResult =
+                        calculateMatchScore(trainer, preferences);
+
+                    trainers.push({
+                        id: trainerDocument.id,
+                        name: trainer.name,
+                        email: trainer.email,
+                        courses: trainer.courses,
+                        language: trainer.language,
+                        pace: trainer.pace,
+                        style: trainer.style,
+                        experience: trainer.experience,
+                        bio: trainer.bio,
+                        score: matchResult.score,
+                        reasons: matchResult.reasons
+                    });
+                });
+
+                trainers.sort(function(firstTrainer, secondTrainer) {
+                    return secondTrainer.score - firstTrainer.score;
+                });
+
+                if (trainers.length === 0) {
+                    document.getElementById("recommendationMessage").innerText =
+                        "No trainers match your selected course and language yet.";
+
+                    document.getElementById("bestTrainer").innerHTML =
+                        '<div class="trainer-empty-state">' +
+                        '<h3>No matching trainer is available yet</h3>' +
+                        '<p>Try another language preference or ask the administrator to add a trainer.</p>' +
+                        '</div>';
+
+                    return;
+                }
+
+                document.getElementById("recommendationMessage").innerText =
+                    trainers.length +
+                    " trainers match your course and language preferences.";
+
+                showBestTrainer(trainers[0]);
+                showOtherTrainers(trainers.slice(1));
+            } catch (error) {
+                document.getElementById("recommendationMessage").innerText =
+                    "Could not load trainers. Make sure Live Server is running.";
+
+                console.error(error);
+            }
+        }
+
+        function createDefaultAvatar() {
+            const avatar = document.createElement("div");
+
+            avatar.className = "trainer-avatar";
+
+            avatar.innerHTML =
+                '<svg viewBox="0 0 64 64" aria-hidden="true">' +
+                '<circle cx="32" cy="32" r="32" fill="#dbeafe"></circle>' +
+                '<circle cx="32" cy="24" r="10" fill="#60a5fa"></circle>' +
+                '<path d="M14 57c2-11 10-17 18-17s16 6 18 17" fill="#60a5fa"></path>' +
+                '</svg>';
+
+            return avatar;
+        }
+
+        function createDetail(label, value) {
+            const detail = document.createElement("div");
+
+            detail.className = "trainer-detail";
+
+            const detailLabel = document.createElement("span");
+            detailLabel.textContent = label;
+
+            const detailValue = document.createElement("strong");
+            detailValue.textContent = value;
+
+            detail.appendChild(detailLabel);
+            detail.appendChild(detailValue);
+
+            return detail;
+        }
+
+        function createMatchChip(text) {
+            const chip = document.createElement("span");
+
+            chip.className = "match-chip";
+            chip.textContent = text;
+
+            return chip;
+        }
+
+        function createTrainerCard(trainer, isBestMatch) {
+            const card = document.createElement("article");
+
+            card.className = isBestMatch
+                ? "trainer-card trainer-card-best"
+                : "trainer-card";
+
+            const profile = document.createElement("div");
+            profile.className = "trainer-profile";
+
+            profile.appendChild(createDefaultAvatar());
+
+            const profileText = document.createElement("div");
+
+            const name = document.createElement("h3");
+            name.textContent = trainer.name;
+
+            const role = document.createElement("p");
+            role.className = "trainer-role";
+            role.textContent = "Verified Capacity Connect Trainer";
+
+            profileText.appendChild(name);
+            profileText.appendChild(role);
+
+            profile.appendChild(profileText);
+            card.appendChild(profile);
+
+            if (isBestMatch) {
+                const scoreCircle = document.createElement("div");
+
+                scoreCircle.className = "match-score-circle";
+                scoreCircle.style.setProperty(
+                    "--score",
+                    trainer.score + "%"
+                );
+
+                const scoreText = document.createElement("strong");
+                scoreText.textContent = trainer.score + "%";
+
+                const scoreLabel = document.createElement("span");
+                scoreLabel.textContent = "Match";
+
+                scoreCircle.appendChild(scoreText);
+                scoreCircle.appendChild(scoreLabel);
+
+                card.appendChild(scoreCircle);
+
+                const bestLabel = document.createElement("p");
+                bestLabel.className = "best-match-label";
+                bestLabel.textContent =
+                    "Best match based on your learning preferences.";
+
+                card.appendChild(bestLabel);
+            } else {
+                const score = document.createElement("p");
+                score.className = "other-match-score";
+                score.textContent =
+                    trainer.score + "% preference match";
+
+                card.appendChild(score);
+            }
+
+            const details = document.createElement("div");
+            details.className = "trainer-details";
+
+            details.appendChild(
+                createDetail("Language", trainer.language)
+            );
+
+            details.appendChild(
+                createDetail("Teaching pace", trainer.pace)
+            );
+
+            details.appendChild(
+                createDetail("Teaching style", trainer.style)
+            );
+
+            details.appendChild(
+                createDetail("Experience", trainer.experience + " years")
+            );
+
+            card.appendChild(details);
+
+            const bio = document.createElement("p");
+            bio.className = "trainer-bio";
+            bio.textContent = trainer.bio;
+
+            card.appendChild(bio);
+
+            const chips = document.createElement("div");
+            chips.className = "match-chips";
+
+            trainer.reasons.forEach(function(reason) {
+                chips.appendChild(createMatchChip(reason));
+            });
+
+            card.appendChild(chips);
+
+            const chooseButton = document.createElement("button");
+
+            chooseButton.className = isBestMatch
+                ? "primary-action"
+                : "outline-action";
+
+            chooseButton.textContent = isBestMatch
+                ? "Choose Best Match"
+                : "Choose This Trainer";
+
+            chooseButton.onclick = function() {
+                chooseTrainer(trainer);
+            };
+
+            card.appendChild(chooseButton);
+
+            return card;
+        }
+
+        function showBestTrainer(trainer) {
+            const bestTrainer = document.getElementById("bestTrainer");
+
+            bestTrainer.innerHTML = "";
+            bestTrainer.appendChild(createTrainerCard(trainer, true));
+        }
+
+        function showOtherTrainers(trainers) {
+            const otherTrainers =
+                document.getElementById("otherTrainers");
+
+            otherTrainers.innerHTML = "";
+
+            if (trainers.length === 0) {
+                otherTrainers.innerHTML =
+                    '<div class="trainer-empty-state">' +
+                    '<p>No other trainers match this language preference.</p>' +
+                    '</div>';
+
+                return;
+            }
+
+            trainers.forEach(function(trainer) {
+                otherTrainers.appendChild(
+                    createTrainerCard(trainer, false)
+                );
+            });
+        }
+
+        function chooseTrainer(trainer) {
+            localStorage.setItem(
+                "selectedTrainer",
+                JSON.stringify(trainer)
+            );
+
+            window.location.href = "course-workspace.html";
+        }
+    </script>
+
+</body>
+</html>

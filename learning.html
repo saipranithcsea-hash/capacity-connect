@@ -9,17 +9,22 @@
 
 <body>
 
-    <div class="login-box">
+    <div class="login-box recommendation-box">
 
-        <h1>Learning Hub</h1>
+        <h1>Your Learning Path</h1>
 
-        <div class="card">
+        <p id="learningMessage">
+            Your learning content is ready.
+        </p>
+
+        <div class="card recommendation-card">
 
             <h3 id="courseTitle">JavaScript Basics</h3>
 
-<p id="courseText">
-    Learn JavaScript fundamentals step by step.
-</p>
+            <p id="courseText">
+                Learn JavaScript fundamentals step by step.
+            </p>
+
             <p><strong>Choose Language:</strong></p>
 
             <button onclick="changeLanguage('English')">
@@ -50,129 +55,97 @@
 
         </div>
 
-
-        <div class="card">
-
-            <h3>Web Development</h3>
-
-            <p>
-                Learn HTML, CSS and basic web development.
-            </p>
-
-        </div>
-
-
         <p>
-            <a href="recommendation.html">
-                ← Back to Recommendations
-            </a>
+            <a href="recommendation.html">&larr; Back to Recommendations</a>
         </p>
 
     </div>
 
-
     <script>
-        let htmlLevel =
-    localStorage.getItem("htmlLevel") || "Beginner";
+        const lessons = {
+            "HTML": {
+                title: "HTML Fundamentals",
+                description: "Learn the structure and building blocks of web pages.",
+                english: "Learn HTML tags, headings, paragraphs, links, images, and forms.",
+                telugu: "HTML tags, headings, paragraphs, links, images mariyu forms nerchukondi.",
+                hindi: "HTML tags, headings, paragraphs, links, images aur forms seekhein."
+            },
 
-let cssLevel =
-    localStorage.getItem("cssLevel") || "Beginner";
+            "CSS": {
+                title: "CSS Fundamentals",
+                description: "Learn styling, layouts, colours, and responsive design.",
+                english: "Learn CSS colours, fonts, spacing, layouts, and responsive design.",
+                telugu: "CSS colours, fonts, spacing, layouts mariyu responsive design nerchukondi.",
+                hindi: "CSS colours, fonts, spacing, layouts aur responsive design seekhein."
+            },
 
-let jsLevel =
-    localStorage.getItem("jsLevel") || "Beginner";
+            "JavaScript": {
+                title: "JavaScript Basics",
+                description: "Learn JavaScript fundamentals step by step.",
+                english: "Learn JavaScript variables, functions, conditions, and events.",
+                telugu: "JavaScript variables, functions, conditions mariyu events nerchukondi.",
+                hindi: "JavaScript variables, functions, conditions aur events seekhein."
+            },
 
-let courseTitle =
-    document.getElementById("courseTitle");
-
-let courseText =
-    document.getElementById("courseText");
-
-if (jsLevel === "Beginner") {
-
-    courseTitle.innerText =
-        "JavaScript Basics";
-
-    courseText.innerText =
-        "Learn JavaScript fundamentals step by step.";
-
-}
-
-else if (htmlLevel === "Beginner") {
-
-    courseTitle.innerText =
-        "HTML Fundamentals";
-
-    courseText.innerText =
-        "Learn HTML fundamentals step by step.";
-
-}
-
-else if (cssLevel === "Beginner") {
-
-    courseTitle.innerText =
-        "CSS Fundamentals";
-
-    courseText.innerText =
-        "Learn CSS fundamentals step by step.";
-
-}
-
-else {
-
-    courseTitle.innerText =
-        "Advanced Web Development";
-
-    courseText.innerText =
-        "Continue developing your web development skills.";
-
-}
-
-        function changeLanguage(language) {
-        localStorage.setItem("selectedLanguage", language);
-
-            let title =
-                document.getElementById("lessonTitle");
-
-            let text =
-                document.getElementById("lessonText");
-
-
-            if (language === "English") {
-
-                title.innerText =
-                    "JavaScript Basics - English";
-
-                text.innerText =
-                    "Learn the fundamentals of JavaScript.";
-
+            "Web Development": {
+                title: "Advanced Web Development",
+                description: "Your core skills are strong. Continue with advanced web development.",
+                english: "Build a complete project using HTML, CSS, and JavaScript.",
+                telugu: "HTML, CSS mariyu JavaScript use chesi complete project build cheyandi.",
+                hindi: "HTML, CSS aur JavaScript ka use karke complete project banaiye."
             }
+        };
 
+        let selectedCourse =
+            localStorage.getItem("selectedLearningSkill") ||
+            localStorage.getItem("recommendedSkill") ||
+            "JavaScript";
 
-            else if (language === "Telugu") {
+        let selectedLanguage =
+            localStorage.getItem("selectedLanguage") || "English";
 
-                title.innerText =
-                    "JavaScript Basics - Telugu";
-
-                text.innerText =
-                    "JavaScript yokka prathamikalanu nerchukondi.";
-
-            }
-
-
-            else if (language === "Hindi") {
-
-                title.innerText =
-                    "JavaScript Basics - Hindi";
-
-                text.innerText =
-                    "JavaScript ki mool baatein seekhein.";
-
-            }
-
+        if (!lessons[selectedCourse]) {
+            selectedCourse = "JavaScript";
         }
 
+        function showLesson() {
+            const lesson = lessons[selectedCourse];
+
+            document.getElementById("learningMessage").innerText =
+                "You chose " + lesson.title +
+                ". You can return to Recommendations anytime to choose another course.";
+
+            document.getElementById("courseTitle").innerText =
+                lesson.title;
+
+            document.getElementById("courseText").innerText =
+                lesson.description;
+
+            document.getElementById("lessonTitle").innerText =
+                lesson.title + " - " + selectedLanguage;
+
+            if (selectedLanguage === "Telugu") {
+                document.getElementById("lessonText").innerText =
+                    lesson.telugu;
+            } else if (selectedLanguage === "Hindi") {
+                document.getElementById("lessonText").innerText =
+                    lesson.hindi;
+            } else {
+                document.getElementById("lessonText").innerText =
+                    lesson.english;
+            }
+        }
+
+        function changeLanguage(language) {
+            selectedLanguage = language;
+
+            localStorage.setItem("selectedLanguage", selectedLanguage);
+
+            showLesson();
+        }
+
+        showLesson();
     </script>
 
 </body>
-
 </html>
