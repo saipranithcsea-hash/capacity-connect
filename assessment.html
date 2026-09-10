@@ -13,8 +13,9 @@
 
         <h1>Skill Assessment</h1>
 
-        <p>Choose your current skill level:</p>
-
+        <p>
+            Choose your current skill level if you already know it.
+        </p>
 
         <label>HTML</label>
 
@@ -24,9 +25,7 @@
             <option value="Advanced">Advanced</option>
         </select>
 
-
         <br><br>
-
 
         <label>CSS</label>
 
@@ -36,9 +35,7 @@
             <option value="Advanced">Advanced</option>
         </select>
 
-
         <br><br>
-
 
         <label>JavaScript</label>
 
@@ -48,9 +45,7 @@
             <option value="Advanced">Advanced</option>
         </select>
 
-
         <br><br>
-
 
         <button onclick="saveAssessment()">
             Submit Assessment
@@ -58,21 +53,37 @@
 
         <p id="message"></p>
 
+        <hr>
+
+        <h2>Not sure about your level?</h2>
+
+        <p>
+            Take a short objective skill test and let Skill Connect
+            analyze your current level automatically.
+        </p>
+
+        <button onclick="window.location.href='skill-test.html'">
+            Know Your Level by Test
+        </button>
+
     </div>
 
 
     <script>
-window.onload = function() {
 
-    document.getElementById("htmlLevel").value =
-        localStorage.getItem("htmlLevel") || "Beginner";
+        window.onload = function() {
 
-    document.getElementById("cssLevel").value =
-        localStorage.getItem("cssLevel") || "Beginner";
+            document.getElementById("htmlLevel").value =
+                localStorage.getItem("htmlLevel") || "Beginner";
 
-    document.getElementById("jsLevel").value =
-        localStorage.getItem("jsLevel") || "Beginner";
-};
+            document.getElementById("cssLevel").value =
+                localStorage.getItem("cssLevel") || "Beginner";
+
+            document.getElementById("jsLevel").value =
+                localStorage.getItem("jsLevel") || "Beginner";
+        };
+
+
         function saveAssessment() {
 
             let htmlLevel =
@@ -90,6 +101,9 @@ window.onload = function() {
             localStorage.setItem("cssLevel", cssLevel);
 
             localStorage.setItem("jsLevel", jsLevel);
+
+
+            localStorage.setItem("assessmentMethod", "Manual");
 
 
             document.getElementById("message").innerText =

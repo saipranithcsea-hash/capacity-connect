@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Dashboard - Skill Connect</title>
+    <title>Dashboard - Skill Connect</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -14,257 +15,452 @@
 
         <p>Welcome to your Skill Connect learning dashboard.</p>
 
-        <div class="card">
-    <h3>My Profile</h3>
-
-    <p><strong>Name:</strong> <span id="name">-</span></p>
-
-    <p><strong>Qualification:</strong>
-        <span id="qualification">-</span>
-    </p>
-    <p><strong>Experience:</strong> <span id="experience">-</span></p>
-
-    <p><strong>Skills:</strong>
-        <span id="skills">-</span>
-    </p>
-
-    <p><strong>Interest:</strong>
-        <span id="interests">-</span>
-    </p>
-
-    <p><strong>Career Goal:</strong>
-        <span id="goal">-</span>
-    </p>
-</div>
 
         <div class="card">
+            <h3>My Profile</h3>
 
-    <h3>Skill Progress</h3>
-    <div class="card">
-    <h3>Overall Progress</h3>
-    <progress id="overallProgress" value="0" max="100"></progress>
-    <p><strong><span id="overallPercent">0</span>% completed</strong></p>
-</div>
+            <p><strong>Name:</strong> <span id="name">-</span></p>
 
-    <p>HTML</p>
-<progress id="htmlProgress" value="0" max="100"></progress>
-<span id="htmlPercent">0%</span>
+            <p><strong>Qualification:</strong>
+                <span id="qualification">-</span>
+            </p>
 
-<p>CSS</p>
-<progress id="cssProgress" value="0" max="100"></progress>
-<span id="cssPercent">0%</span>
+            <p><strong>Experience:</strong>
+                <span id="experience">-</span>
+            </p>
 
-<p>JavaScript</p>
-<progress id="jsProgress" value="0" max="100"></progress>
-<span id="jsPercent">0%</span>
+            <p><strong>Skills:</strong>
+                <span id="skills">-</span>
+            </p>
 
-</div>
+            <p><strong>Interest:</strong>
+                <span id="interests">-</span>
+            </p>
 
-        <div class="card">
-    <h3>Skill Gap</h3>
-
-    <p id="skillGapMessage">
-        Checking your skill gaps...
-    </p>
-
-    <p>
-        <strong>Required Level:</strong> Intermediate
-    </p>
-</div>
-
-        <div class="card">
-            <h3>Recommended Course</h3>
-            <p id="courseName">
-    Checking recommendation...
-</p>
-            <button onclick="window.location.href='learning.html'">
-    Continue Learning
-</button>
+            <p><strong>Career Goal:</strong>
+                <span id="goal">-</span>
+            </p>
         </div>
 
+
         <div class="card">
-            <h3>Latest Quiz Result</h3>
-            <p>JavaScript Basics Quiz</p>
+
+            <h3>My Skill Level</h3>
+
             <p>
-    <strong>Score: <span id="quizScore">0</span>%</strong>
-</p>
+                <strong>HTML:</strong>
+                <span id="htmlLevel">Not assessed</span>
+            </p>
+
+            <p>
+                <strong>CSS:</strong>
+                <span id="cssLevel">Not assessed</span>
+            </p>
+
+            <p>
+                <strong>JavaScript:</strong>
+                <span id="jsLevel">Not assessed</span>
+            </p>
+
+            <p id="assessmentMethod">
+                Assessment method: Not available
+            </p>
+
+            <button onclick="window.location.href='skill-test.html'">
+                Take Skill Test
+            </button>
+
         </div>
+
+
         <div class="card">
-    <h3>Learning Status</h3>
-    <p id="learningStatus">Keep learning and improving your skills!</p>
-    <button onclick="window.location.href='learning.html'">
-        Go to Learning
-    </button>
-</div>
-<div class="card">
-    <h3>Quick Actions</h3>
 
-    <button onclick="window.location.href='assessment.html'">
-        Take Assessment
-    </button>
+            <h3>Skill Test Scores</h3>
 
-    <button onclick="window.location.href='learning.html'">
-        Continue Learning
-    </button>
+            <p>
+                HTML:
+                <strong><span id="htmlTestScore">0</span> / 5</strong>
+            </p>
 
-    <button onclick="window.location.href='quiz.html'">
-        Take Quiz
-    </button>
+            <p>
+                CSS:
+                <strong><span id="cssTestScore">0</span> / 5</strong>
+            </p>
 
-    <button onclick="window.location.href='recommendation.html'">
-        View Recommendations
-    </button>
-</div>
+            <p>
+                JavaScript:
+                <strong><span id="jsTestScore">0</span> / 5</strong>
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Skill Progress</h3>
+
+            <div class="card">
+
+                <h3>Overall Progress</h3>
+
+                <progress id="overallProgress" value="0" max="100"></progress>
+
+                <p>
+                    <strong>
+                        <span id="overallPercent">0</span>% completed
+                    </strong>
+                </p>
+
+            </div>
+
+
+            <p>HTML</p>
+
+            <progress id="htmlProgress" value="0" max="100"></progress>
+
+            <span id="htmlPercent">0%</span>
+
+
+            <p>CSS</p>
+
+            <progress id="cssProgress" value="0" max="100"></progress>
+
+            <span id="cssPercent">0%</span>
+
+
+            <p>JavaScript</p>
+
+            <progress id="jsProgress" value="0" max="100"></progress>
+
+            <span id="jsPercent">0%</span>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Skill Gap</h3>
+
+            <p id="skillGapMessage">
+                Checking your skill gaps...
+            </p>
+
+            <p>
+                <strong>Required Level:</strong> Intermediate
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Recommended Course</h3>
+
+            <p id="courseName">
+                Checking recommendation...
+            </p>
+
+            <button onclick="window.location.href='learning.html'">
+                Continue Learning
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Latest Quiz Result</h3>
+
+            <p>JavaScript Basics Quiz</p>
+
+            <p>
+                <strong>
+                    Score: <span id="quizScore">0</span>%
+                </strong>
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Learning Status</h3>
+
+            <p id="learningStatus">
+                Keep learning and improving your skills!
+            </p>
+
+            <button onclick="window.location.href='learning.html'">
+                Go to Learning
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Quick Actions</h3>
+
+            <button onclick="window.location.href='assessment.html'">
+                Take Assessment
+            </button>
+
+            <button onclick="window.location.href='learning.html'">
+                Continue Learning
+            </button>
+
+            <button onclick="window.location.href='quiz.html'">
+                Take Quiz
+            </button>
+
+            <button onclick="window.location.href='recommendation.html'">
+                View Recommendations
+            </button>
+
+        </div>
+
 
         <p>
             <a href="index.html">← Back to Home</a>
         </p>
 
     </div>
- 
 
-<script>
 
-    document.getElementById("name").innerText =
-        localStorage.getItem("traineeName") || "-";
+    <script>
 
-    document.getElementById("qualification").innerText =
-        localStorage.getItem("qualification") || "-";
+        /* Profile */
+
+        document.getElementById("name").innerText =
+            localStorage.getItem("traineeName") || "-";
+
+        document.getElementById("qualification").innerText =
+            localStorage.getItem("qualification") || "-";
+
         document.getElementById("experience").innerText =
-    localStorage.getItem("experience") || "-";
+            localStorage.getItem("experience") || "-";
 
-    document.getElementById("skills").innerText =
-        localStorage.getItem("skills") || "-";
+        document.getElementById("skills").innerText =
+            localStorage.getItem("skills") || "-";
 
-    document.getElementById("interests").innerText =
-        localStorage.getItem("interests") || "-";
+        document.getElementById("interests").innerText =
+            localStorage.getItem("interests") || "-";
 
-    document.getElementById("goal").innerText =
-        localStorage.getItem("careerGoal") || "-";
-
-
-        let score = localStorage.getItem("quizScore");
-
-document.getElementById("quizScore").innerText = score || "0";
-function getProgress(level) {
-
-    if (level === "Beginner") {
-        return 30;
-    }
-
-    if (level === "Intermediate") {
-        return 60;
-    }
-
-    if (level === "Advanced") {
-        return 90;
-    }
-
-    return 0;
-}
+        document.getElementById("goal").innerText =
+            localStorage.getItem("careerGoal") || "-";
 
 
-let htmlLevel =
-    localStorage.getItem("htmlLevel");
+        /* Quiz Score */
 
-let cssLevel =
-    localStorage.getItem("cssLevel");
+        let quizScore =
+            localStorage.getItem("quizScore");
 
-let jsLevel =
-    localStorage.getItem("jsLevel");
-    let skillGapMessage =
-    document.getElementById("skillGapMessage");
-
-if (jsLevel === "Beginner") {
-    skillGapMessage.innerText =
-        "JavaScript needs improvement.";
-}
-else if (htmlLevel === "Beginner") {
-    skillGapMessage.innerText =
-        "HTML needs improvement.";
-}
-else if (cssLevel === "Beginner") {
-    skillGapMessage.innerText =
-        "CSS needs improvement.";
-}
-else {
-    skillGapMessage.innerText =
-        "Great! No major skill gaps found.";
-}
+        document.getElementById("quizScore").innerText =
+            quizScore || "0";
 
 
-document.getElementById("htmlProgress").value =
-    getProgress(htmlLevel);
+        /* Detected Skill Levels */
 
-document.getElementById("cssProgress").value =
-    getProgress(cssLevel);
+        let htmlLevel =
+            localStorage.getItem("htmlLevel");
 
-document.getElementById("jsProgress").value =
-    getProgress(jsLevel);
-    document.getElementById("htmlPercent").innerText =
-    getProgress(htmlLevel) + "%";
+        let cssLevel =
+            localStorage.getItem("cssLevel");
 
-document.getElementById("cssPercent").innerText =
-    getProgress(cssLevel) + "%";
+        let jsLevel =
+            localStorage.getItem("jsLevel");
 
-document.getElementById("jsPercent").innerText =
-    getProgress(jsLevel) + "%";
-    let overall =
-    Math.round(
-        (getProgress(htmlLevel) +
-        getProgress(cssLevel) +
-        getProgress(jsLevel)) / 3
-    );
 
-document.getElementById("overallProgress").value = overall;
-document.getElementById("overallPercent").innerText = overall;
-let learningStatus =
-    document.getElementById("learningStatus");
+        document.getElementById("htmlLevel").innerText =
+            htmlLevel || "Not assessed";
 
-if (overall >= 80) {
-    learningStatus.innerText =
-        "Excellent progress! Keep it up!";
-}
-else if (overall >= 50) {
-    learningStatus.innerText =
-        "Good progress! Keep learning!";
-}
-else {
-    learningStatus.innerText =
-        "Start learning and improve your skills!";
-}
-    // Course recommendation
+        document.getElementById("cssLevel").innerText =
+            cssLevel || "Not assessed";
 
-let courseName =
-    document.getElementById("courseName");
+        document.getElementById("jsLevel").innerText =
+            jsLevel || "Not assessed";
 
-if (jsLevel === "Beginner") {
 
-    courseName.innerText =
-        "JavaScript Basics";
+        /* Assessment Method */
 
-}
+        let method =
+            localStorage.getItem("assessmentMethod");
 
-else if (htmlLevel === "Beginner") {
+        if (method) {
 
-    courseName.innerText =
-        "HTML Fundamentals";
+            document.getElementById("assessmentMethod").innerText =
+                "Assessment method: " + method;
 
-}
+        }
 
-else if (cssLevel === "Beginner") {
 
-    courseName.innerText =
-        "CSS Fundamentals";
+        /* Skill Test Scores */
 
-}
+        document.getElementById("htmlTestScore").innerText =
+            localStorage.getItem("htmlTestScore") || "0";
 
-else {
+        document.getElementById("cssTestScore").innerText =
+            localStorage.getItem("cssTestScore") || "0";
 
-    courseName.innerText =
-        "Advanced Web Development";
+        document.getElementById("jsTestScore").innerText =
+            localStorage.getItem("jsTestScore") || "0";
 
-}
-</script>
+
+        /* Progress */
+
+        function getProgress(level) {
+
+            if (level === "Beginner") {
+                return 30;
+            }
+
+            if (level === "Intermediate") {
+                return 60;
+            }
+
+            if (level === "Advanced") {
+                return 90;
+            }
+
+            return 0;
+
+        }
+
+
+        let skillGapMessage =
+            document.getElementById("skillGapMessage");
+
+
+        if (jsLevel === "Beginner") {
+
+            skillGapMessage.innerText =
+                "JavaScript needs improvement.";
+
+        }
+
+        else if (htmlLevel === "Beginner") {
+
+            skillGapMessage.innerText =
+                "HTML needs improvement.";
+
+        }
+
+        else if (cssLevel === "Beginner") {
+
+            skillGapMessage.innerText =
+                "CSS needs improvement.";
+
+        }
+
+        else {
+
+            skillGapMessage.innerText =
+                "Great! No major skill gaps found.";
+
+        }
+
+
+        document.getElementById("htmlProgress").value =
+            getProgress(htmlLevel);
+
+        document.getElementById("cssProgress").value =
+            getProgress(cssLevel);
+
+        document.getElementById("jsProgress").value =
+            getProgress(jsLevel);
+
+
+        document.getElementById("htmlPercent").innerText =
+            getProgress(htmlLevel) + "%";
+
+        document.getElementById("cssPercent").innerText =
+            getProgress(cssLevel) + "%";
+
+        document.getElementById("jsPercent").innerText =
+            getProgress(jsLevel) + "%";
+
+
+        let overall =
+            Math.round(
+                (
+                    getProgress(htmlLevel) +
+                    getProgress(cssLevel) +
+                    getProgress(jsLevel)
+                ) / 3
+            );
+
+
+        document.getElementById("overallProgress").value =
+            overall;
+
+        document.getElementById("overallPercent").innerText =
+            overall;
+
+
+        /* Learning Status */
+
+        let learningStatus =
+            document.getElementById("learningStatus");
+
+
+        if (overall >= 80) {
+
+            learningStatus.innerText =
+                "Excellent progress! Keep it up!";
+
+        }
+
+        else if (overall >= 50) {
+
+            learningStatus.innerText =
+                "Good progress! Keep learning!";
+
+        }
+
+        else {
+
+            learningStatus.innerText =
+                "Start learning and improve your skills!";
+
+        }
+
+
+        /* Course Recommendation */
+
+        let courseName =
+            document.getElementById("courseName");
+
+
+        if (jsLevel === "Beginner") {
+
+            courseName.innerText =
+                "JavaScript Basics";
+
+        }
+
+        else if (htmlLevel === "Beginner") {
+
+            courseName.innerText =
+                "HTML Fundamentals";
+
+        }
+
+        else if (cssLevel === "Beginner") {
+
+            courseName.innerText =
+                "CSS Fundamentals";
+
+        }
+
+        else {
+
+            courseName.innerText =
+                "Advanced Web Development";
+
+        }
+
+    </script>
+
 </body>
+
 </html>
