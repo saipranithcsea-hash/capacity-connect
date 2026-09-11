@@ -1,143 +1,580 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Trainer Dashboard - Skill Connect</title>
-
+    <title>Trainer Studio - Capacity Connect</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="login-box">
+    <main class="studio-page">
 
-        <h1>Skill Connect</h1>
-        <h2>Trainer Dashboard</h2>
+        <section class="studio-hero">
+            <div>
+                <p class="studio-eyebrow">CAPACITY CONNECT TRAINER STUDIO</p>
+                <h1>Teach. Guide. Track progress.</h1>
+                <p>
+                    Select your trainer profile and course to publish content
+                    and monitor trainee progress.
+                </p>
+            </div>
 
-        <p>Welcome, Trainer!</p>
+            <div class="studio-hero-icon">+</div>
+        </section>
 
-        <h2>Session Requests</h2>
+        <section class="studio-selector-card">
+            <div class="studio-field">
+                <label for="trainerSelect">Trainer Profile</label>
+                <select id="trainerSelect" onchange="selectTrainer()">
+                    <option value="">Choose your trainer profile</option>
+                </select>
+            </div>
 
-        <div class="card">
+            <div class="studio-field">
+                <label for="courseSelect">Course You Teach</label>
+                <select id="courseSelect" onchange="loadCourseContent()" disabled>
+                    <option value="">Choose a course</option>
+                </select>
+            </div>
+        </section>
 
-            <h3>JavaScript Training Request</h3>
+        <section id="trainerInfo" class="studio-trainer-info">
+            <p>Select a trainer profile to begin.</p>
+        </section>
 
-            <p>
-                <strong>Trainee:</strong> Student
+        <section class="studio-stats">
+            <div class="studio-stat-card">
+                <span>Published Content</span>
+                <strong id="contentCount">0</strong>
+            </div>
+
+            <div class="studio-stat-card">
+                <span>Lectures</span>
+                <strong id="lectureCount">0</strong>
+            </div>
+
+            <div class="studio-stat-card">
+                <span>Notes</span>
+                <strong id="noteCount">0</strong>
+            </div>
+
+            <div class="studio-stat-card">
+                <span>Assignments</span>
+                <strong id="assignmentCount">0</strong>
+            </div>
+
+            <div class="studio-stat-card">
+                <span>Enrolled Trainees</span>
+                <strong id="enrolledStudentCount">0</strong>
+            </div>
+        </section>
+
+        <section class="studio-layout">
+
+            <div class="studio-panel">
+                <p class="section-kicker">CREATE CONTENT</p>
+                <h2>Add Learning Content</h2>
+
+                <form id="contentForm">
+
+                    <label for="contentType">Content Type</label>
+                    <select id="contentType" required>
+                        <option value="Lecture">Lecture</option>
+                        <option value="Note">Study Note</option>
+                        <option value="Assignment">Assignment</option>
+                    </select>
+
+                    <label for="contentTitle">Title</label>
+                    <input
+                        type="text"
+                        id="contentTitle"
+                        placeholder="Example: Introduction to HTML"
+                        required
+                    >
+
+                    <label for="contentDescription">Description / Instructions</label>
+                    <textarea
+                        id="contentDescription"
+                        rows="5"
+                        placeholder="Explain what the trainee will learn or complete."
+                        required
+                    ></textarea>
+
+                    <label for="contentLink">Lecture or Note Link (optional)</label>
+                    <input
+                        type="url"
+                        id="contentLink"
+                        placeholder="Example: YouTube, Google Drive, or document link"
+                    >
+
+                    <button type="submit" class="studio-primary-button">
+                        Publish Content
+                    </button>
+
+                    <p id="contentMessage"></p>
+
+                </form>
+            </div>
+
+            <div class="studio-panel">
+                <p class="section-kicker">PUBLISHED BY YOU</p>
+                <h2>Course Content</h2>
+
+                <p id="contentListMessage">
+                    Select your trainer profile and course to view content.
+                </p>
+
+                <div id="contentList" class="studio-content-list"></div>
+            </div>
+
+        </section>
+
+        <section class="studio-students-panel">
+
+            <div class="studio-students-heading">
+                <div>
+                    <p class="section-kicker">TRAINEE ANALYTICS</p>
+                    <h2>Student Progress</h2>
+                </div>
+
+                <div class="student-progress-summary">
+                    <div>
+                        <span>Enrolled</span>
+                        <strong id="studentTotal">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Average Progress</span>
+                        <strong id="averageProgress">0%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <p id="studentListMessage">
+                Select your trainer profile and course to view trainees.
             </p>
 
-            <p>
-                <strong>Skill:</strong> JavaScript
-            </p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trainee</th>
+                            <th>Progress</th>
+                            <th>Completed Items</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
 
-           <p>
-    <strong>Status:</strong>
-    <span id="requestStatus">Pending</span>
-</p>
+                    <tbody id="studentTableBody"></tbody>
+                </table>
+            </div>
 
-            <button type="button" onclick="acceptRequest()">
-    Accept
-</button>
+        </section>
 
-<button type="button" onclick="rejectRequest()">
-    Reject
-</button>
-
-<p id="requestMessage"></p>
-<div id="sessionSection" style="display: none;">
-
-    <h3>Set Session Time</h3>
-
-    <label for="sessionDate">Session Date</label>
-
-    <input type="date" id="sessionDate">
-
-    <label for="sessionTime">Session Time</label>
-
-    <select id="sessionTime">
-    <option value="">Select Time</option>
-    <option value="09:00 AM">09:00 AM</option>
-    <option value="10:00 AM">10:00 AM</option>
-    <option value="11:00 AM">11:00 AM</option>
-    <option value="12:00 PM">12:00 PM</option>
-    <option value="01:00 PM">01:00 PM</option>
-    <option value="02:00 PM">02:00 PM</option>
-    <option value="03:00 PM">03:00 PM</option>
-    <option value="04:00 PM">04:00 PM</option>
-    <option value="05:00 PM">05:00 PM</option>
-</select>
-    <br><br>
-
-    <button type="button" onclick="confirmSession()">
-        Confirm Session
-    </button>
-
-    <p id="sessionMessage"></p>
-
-</div>
-
+        <div class="studio-footer-links">
+            <a href="admin.html">&larr; Back to Admin Dashboard</a>
+            <a href="index.html">&larr; Back to Home</a>
         </div>
 
-        <br>
+    </main>
 
-        <a href="index.html" class="start-button">
-            Back to Home
-        </a>
+    <script type="module">
+        import { db } from "./firebase-config.js";
 
-    </div>
-<script>
+        import {
+            addDoc,
+            collection,
+            getDocs,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-    function acceptRequest() {
-        document.getElementById("requestStatus").innerText = "Accepted";
+        let allTrainers = [];
+        let currentTrainer = null;
+        let currentCourse = "";
 
-        document.getElementById("requestMessage").innerText =
-            "Session request accepted. Please select a session time.";
+        const trainerSelect =
+            document.getElementById("trainerSelect");
 
-        document.getElementById("sessionSection").style.display =
-            "block";
+        const courseSelect =
+            document.getElementById("courseSelect");
 
-    }
+        const contentForm =
+            document.getElementById("contentForm");
 
+        const studentTableBody =
+            document.getElementById("studentTableBody");
 
-    function rejectRequest() {
-        document.getElementById("requestStatus").innerText = "Rejected";
+        async function loadTrainerProfiles() {
+            try {
+                const trainerSnapshot = await getDocs(
+                    collection(db, "trainers")
+                );
 
-        document.getElementById("requestMessage").innerText =
-            "Session request rejected.";
+                trainerSnapshot.forEach(function(trainerDocument) {
+                    const trainer = trainerDocument.data();
 
-        document.getElementById("sessionSection").style.display =
-            "none";
+                    allTrainers.push({
+                        id: trainerDocument.id,
+                        name: trainer.name,
+                        email: trainer.email,
+                        courses: trainer.courses,
+                        language: trainer.language,
+                        pace: trainer.pace,
+                        style: trainer.style,
+                        experience: trainer.experience,
+                        bio: trainer.bio
+                    });
+                });
 
-    }
+                allTrainers.sort(function(firstTrainer, secondTrainer) {
+                    return firstTrainer.name.localeCompare(
+                        secondTrainer.name
+                    );
+                });
 
+                allTrainers.forEach(function(trainer) {
+                    const option = document.createElement("option");
 
-    function confirmSession() {
+                    option.value = trainer.id;
+                    option.textContent = trainer.name;
 
-        let date =
-            document.getElementById("sessionDate").value;
+                    trainerSelect.appendChild(option);
+                });
+            } catch (error) {
+                document.getElementById("trainerInfo").innerText =
+                    "Could not load trainer profiles. Run the page with Live Server.";
 
-        let time =
-            document.getElementById("sessionTime").value;
-
-
-        if (!date || !time) {
-
-            document.getElementById("sessionMessage").innerText =
-                "Please select both date and time.";
-
-            return;
+                console.error(error);
+            }
         }
 
+        window.selectTrainer = function() {
+            const selectedTrainerId = trainerSelect.value;
 
-        document.getElementById("sessionMessage").innerText =
-            "Session confirmed for " + date + " at " + time + ".";
+            currentTrainer = allTrainers.find(function(trainer) {
+                return trainer.id === selectedTrainerId;
+            });
 
-    }
+            courseSelect.innerHTML =
+                '<option value="">Choose a course</option>';
 
-</script>
+            document.getElementById("contentList").innerHTML = "";
+            document.getElementById("contentListMessage").innerText =
+                "Choose one of your courses to view published content.";
+
+            resetStats();
+            resetStudentProgress();
+
+            if (!currentTrainer) {
+                courseSelect.disabled = true;
+
+                document.getElementById("trainerInfo").innerHTML =
+                    "<p>Select a trainer profile to begin.</p>";
+
+                return;
+            }
+
+            courseSelect.disabled = false;
+
+            currentTrainer.courses.forEach(function(course) {
+                const option = document.createElement("option");
+
+                option.value = course;
+                option.textContent = getCourseTitle(course);
+
+                courseSelect.appendChild(option);
+            });
+
+            document.getElementById("trainerInfo").innerHTML =
+                "<div class='studio-profile-mini'>" +
+                "<div class='studio-profile-avatar'>" +
+                "<svg viewBox='0 0 64 64' aria-hidden='true'>" +
+                "<circle cx='32' cy='32' r='32' fill='#dbeafe'></circle>" +
+                "<circle cx='32' cy='24' r='10' fill='#60a5fa'></circle>" +
+                "<path d='M14 57c2-11 10-17 18-17s16 6 18 17' fill='#60a5fa'></path>" +
+                "</svg>" +
+                "</div>" +
+                "<div>" +
+                "<strong>" + currentTrainer.name + "</strong>" +
+                "<span>" + currentTrainer.language + " | " +
+                currentTrainer.style + "</span>" +
+                "</div>" +
+                "</div>";
+        };
+
+        window.loadCourseContent = async function() {
+            currentCourse = courseSelect.value;
+
+            document.getElementById("contentList").innerHTML = "";
+            resetStats();
+            resetStudentProgress();
+
+            if (!currentTrainer || !currentCourse) {
+                document.getElementById("contentListMessage").innerText =
+                    "Choose a course to view published content.";
+
+                return;
+            }
+
+            document.getElementById("contentListMessage").innerText =
+                "Loading content for " + getCourseTitle(currentCourse) + "...";
+
+            try {
+                const contentSnapshot = await getDocs(
+                    collection(db, "courseContent")
+                );
+
+                let contentItems = [];
+
+                contentSnapshot.forEach(function(contentDocument) {
+                    const content = contentDocument.data();
+
+                    if (
+                        content.trainerId === currentTrainer.id &&
+                        content.course === currentCourse
+                    ) {
+                        contentItems.push(content);
+                    }
+                });
+
+                renderContent(contentItems);
+                await loadStudentProgress();
+            } catch (error) {
+                document.getElementById("contentListMessage").innerText =
+                    "Could not load course content.";
+
+                console.error(error);
+            }
+        };
+
+        contentForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            if (!currentTrainer || !currentCourse) {
+                document.getElementById("contentMessage").innerText =
+                    "Please select your trainer profile and course first.";
+
+                return;
+            }
+
+            const contentData = {
+                trainerId: currentTrainer.id,
+                trainerName: currentTrainer.name,
+                course: currentCourse,
+                type: document.getElementById("contentType").value,
+                title: document.getElementById("contentTitle").value.trim(),
+                description:
+                    document.getElementById("contentDescription").value.trim(),
+                link: document.getElementById("contentLink").value.trim(),
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                await addDoc(
+                    collection(db, "courseContent"),
+                    contentData
+                );
+
+                document.getElementById("contentMessage").innerText =
+                    "Content published successfully.";
+
+                contentForm.reset();
+                loadCourseContent();
+            } catch (error) {
+                document.getElementById("contentMessage").innerText =
+                    "Could not publish content. Make sure Live Server is running.";
+
+                console.error(error);
+            }
+        });
+
+        async function loadStudentProgress() {
+            const enrollmentSnapshot = await getDocs(
+                collection(db, "enrollments")
+            );
+
+            let students = [];
+
+            enrollmentSnapshot.forEach(function(enrollmentDocument) {
+                const enrollment = enrollmentDocument.data();
+
+                if (
+                    enrollment.trainerId === currentTrainer.id &&
+                    enrollment.course === currentCourse
+                ) {
+                    students.push(enrollment);
+                }
+            });
+
+            students.sort(function(firstStudent, secondStudent) {
+                return secondStudent.progress - firstStudent.progress;
+            });
+
+            renderStudentProgress(students);
+        }
+
+        function renderStudentProgress(students) {
+            studentTableBody.innerHTML = "";
+
+            let totalProgress = 0;
+
+            students.forEach(function(student) {
+                totalProgress += Number(student.progress) || 0;
+
+                const row = document.createElement("tr");
+
+                const updatedDate =
+                    student.updatedAt && student.updatedAt.toDate
+                        ? student.updatedAt.toDate().toLocaleString()
+                        : "Just now";
+
+                const completedCount =
+                    student.completedActivities
+                        ? student.completedActivities.length
+                        : 0;
+
+                const values = [
+                    student.traineeName || "Trainee",
+                    (student.progress || 0) + "%",
+                    completedCount,
+                    updatedDate
+                ];
+
+                values.forEach(function(value) {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+                studentTableBody.appendChild(row);
+            });
+
+            const average = students.length === 0
+                ? 0
+                : Math.round(totalProgress / students.length);
+
+            document.getElementById("enrolledStudentCount").innerText =
+                students.length;
+
+            document.getElementById("studentTotal").innerText =
+                students.length;
+
+            document.getElementById("averageProgress").innerText =
+                average + "%";
+
+            document.getElementById("studentListMessage").innerText =
+                students.length === 0
+                    ? "No trainees have enrolled in this course yet."
+                    : students.length +
+                    " trainee(s) enrolled in " +
+                    getCourseTitle(currentCourse) + ".";
+        }
+
+        function renderContent(contentItems) {
+            const contentList =
+                document.getElementById("contentList");
+
+            contentList.innerHTML = "";
+
+            let lectureTotal = 0;
+            let noteTotal = 0;
+            let assignmentTotal = 0;
+
+            contentItems.forEach(function(content) {
+                if (content.type === "Lecture") {
+                    lectureTotal += 1;
+                }
+
+                if (content.type === "Note") {
+                    noteTotal += 1;
+                }
+
+                if (content.type === "Assignment") {
+                    assignmentTotal += 1;
+                }
+
+                const card = document.createElement("article");
+                card.className = "studio-content-card";
+
+                const type = document.createElement("span");
+                type.className = "studio-type-badge";
+                type.textContent = content.type;
+
+                const title = document.createElement("h3");
+                title.textContent = content.title;
+
+                const description = document.createElement("p");
+                description.textContent = content.description;
+
+                card.appendChild(type);
+                card.appendChild(title);
+                card.appendChild(description);
+
+                if (content.link) {
+                    const link = document.createElement("a");
+
+                    link.href = content.link;
+                    link.target = "_blank";
+                    link.rel = "noopener";
+                    link.className = "studio-content-link";
+                    link.textContent = "Open resource";
+
+                    card.appendChild(link);
+                }
+
+                contentList.appendChild(card);
+            });
+
+            document.getElementById("contentCount").innerText =
+                contentItems.length;
+
+            document.getElementById("lectureCount").innerText =
+                lectureTotal;
+
+            document.getElementById("noteCount").innerText =
+                noteTotal;
+
+            document.getElementById("assignmentCount").innerText =
+                assignmentTotal;
+
+            document.getElementById("contentListMessage").innerText =
+                contentItems.length === 0
+                    ? "No content has been published for this course yet."
+                    : contentItems.length +
+                    " published item(s) for " +
+                    getCourseTitle(currentCourse) + ".";
+        }
+
+        function resetStats() {
+            document.getElementById("contentCount").innerText = "0";
+            document.getElementById("lectureCount").innerText = "0";
+            document.getElementById("noteCount").innerText = "0";
+            document.getElementById("assignmentCount").innerText = "0";
+            document.getElementById("enrolledStudentCount").innerText = "0";
+        }
+
+        function resetStudentProgress() {
+            studentTableBody.innerHTML = "";
+            document.getElementById("studentTotal").innerText = "0";
+            document.getElementById("averageProgress").innerText = "0%";
+            document.getElementById("studentListMessage").innerText =
+                "Select your trainer profile and course to view trainees.";
+        }
+
+        function getCourseTitle(course) {
+            const courseTitles = {
+                "HTML": "HTML Fundamentals",
+                "CSS": "CSS Fundamentals",
+                "JavaScript": "JavaScript Basics",
+                "Web Development": "Advanced Web Development"
+            };
+
+            return courseTitles[course] || course;
+        }
+
+        loadTrainerProfiles();
+    </script>
+
 </body>
-
 </html>

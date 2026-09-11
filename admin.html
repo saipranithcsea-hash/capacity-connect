@@ -1,85 +1,460 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Skill Connect</title>
-
+    <title>Admin Dashboard - Capacity Connect</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="login-box">
+    <div class="admin-box">
 
-       <h1>Skill Connect</h1>
-        <h2>Admin Dashboard</h2>
+        <h1>Admin Dashboard</h1>
 
-        <p>Organization Management & Monitoring</p>
+        <p class="admin-note">
+            Add and manage trainer information for Capacity Connect.
+        </p>
 
+        <div class="admin-stats">
+            <div class="stat-card">
+                <h3 id="trainerCount">0</h3>
+                <p>Total Trainers</p>
+            </div>
 
-        <div class="card">
+            <div class="stat-card">
+                <h3 id="htmlTrainerCount">0</h3>
+                <p>HTML Trainers</p>
+            </div>
 
-            <h3>Platform Overview</h3>
+            <div class="stat-card">
+                <h3 id="cssTrainerCount">0</h3>
+                <p>CSS Trainers</p>
+            </div>
 
-            <p>
-                <strong>Total Trainees:</strong>
-                3
-            </p>
-
-            <p>
-                <strong>Total Trainers:</strong>
-                2
-            </p>
-
-            <p>
-                <strong>Available Courses:</strong>
-                3
-            </p>
-
-            <p>
-                <strong>Active Training Requests:</strong>
-                1
-            </p>
-
+            <div class="stat-card">
+                <h3 id="jsTrainerCount">0</h3>
+                <p>JavaScript Trainers</p>
+            </div>
         </div>
 
+        <div class="admin-section">
+            <h2>Add a Trainer</h2>
 
-        <div class="card">
+            <form id="trainerForm" class="admin-form">
 
-            <h3>Common Skill Gaps</h3>
+                <label for="trainerName">Trainer Name</label>
+                <input
+                    type="text"
+                    id="trainerName"
+                    placeholder="Example: Priya Reddy"
+                    required
+                >
 
-            <p>JavaScript — Beginner</p>
-            <p>HTML — Beginner</p>
-            <p>CSS — Beginner</p>
+                <label for="trainerEmail">Trainer Email</label>
+                <input
+                    type="email"
+                    id="trainerEmail"
+                    placeholder="Example: priya@email.com"
+                    required
+                >
 
+                <label>Courses Taught</label>
+
+                <div class="checkbox-row">
+                    <label>
+                        <input type="checkbox" name="course" value="HTML">
+                        HTML Fundamentals
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="course" value="CSS">
+                        CSS Fundamentals
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="course" value="JavaScript">
+                        JavaScript Basics
+                    </label>
+                </div>
+
+                <label for="trainerLanguage">Teaching Language</label>
+                <select id="trainerLanguage" required>
+                    <option value="">Choose a language</option>
+                    <option value="English">English</option>
+                    <option value="Telugu">Telugu</option>
+                    <option value="Hindi">Hindi</option>
+                    <option value="Hindi + English">Hindi + English</option>
+                </select>
+
+                <label for="trainerPace">Teaching Pace</label>
+                <select id="trainerPace" required>
+                    <option value="">Choose a pace</option>
+                    <option value="Fast and Crisp">Fast and crisp</option>
+                    <option value="Balanced">Balanced</option>
+                    <option value="Slow and Detailed">Slow and detailed</option>
+                </select>
+
+                <label for="trainerStyle">Teaching Style</label>
+                <select id="trainerStyle" required>
+                    <option value="">Choose a style</option>
+                    <option value="Practical and Project Based">
+                        Practical and project-based
+                    </option>
+                    <option value="Simple Step by Step">
+                        Simple step-by-step explanations
+                    </option>
+                    <option value="Story Based and Engaging">
+                        Story-based and engaging
+                    </option>
+                </select>
+
+                <label for="trainerExperience">Experience in Years</label>
+                <input
+                    type="number"
+                    id="trainerExperience"
+                    min="0"
+                    max="50"
+                    placeholder="Example: 5"
+                    required
+                >
+
+                <label for="trainerBio">Short Trainer Introduction</label>
+                <textarea
+                    id="trainerBio"
+                    rows="4"
+                    placeholder="Example: Helps beginners learn web development through practical examples."
+                    required
+                ></textarea>
+
+                <button type="submit">Add Trainer</button>
+
+                <p id="formMessage"></p>
+
+            </form>
         </div>
 
-
-        <div class="card">
-
-            <h3>Training Monitoring</h3>
+        <div class="admin-section">
+            <h2>Sample Data</h2>
 
             <p>
-                Trainees can be monitored based on their
-                skill assessment, learning progress and quiz results.
+                Add 12 sample trainers for each course. Use this once for testing.
             </p>
 
-            <p>
-                Administrators can manage trainees, trainers,
-                courses and organizational training requirements.
-            </p>
+            <button type="button" onclick="loadSampleTrainers()">
+                Load 36 Sample Trainers
+            </button>
 
+            <p id="sampleMessage"></p>
         </div>
 
+        <div class="admin-section">
+            <h2>Trainer Details</h2>
+
+            <p id="loadingMessage">Loading trainers...</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Courses</th>
+                            <th>Language</th>
+                            <th>Pace</th>
+                            <th>Style</th>
+                            <th>Experience</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="trainerTableBody"></tbody>
+                </table>
+            </div>
+        </div>
 
         <p>
-            <a href="index.html">← Back to Home</a>
+            <a href="index.html">&larr; Back to Home</a>
         </p>
 
     </div>
 
+    <script type="module">
+        import { db } from "./firebase-config.js";
+
+        import {
+            addDoc,
+            collection,
+            doc,
+            getDocs,
+            serverTimestamp,
+            setDoc,
+            writeBatch
+        } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+        const trainerForm = document.getElementById("trainerForm");
+        const trainerTableBody =
+            document.getElementById("trainerTableBody");
+
+        trainerForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const selectedCourses = Array.from(
+                document.querySelectorAll('input[name="course"]:checked')
+            ).map(function(course) {
+                return course.value;
+            });
+
+            if (selectedCourses.length === 0) {
+                document.getElementById("formMessage").innerText =
+                    "Please select at least one course.";
+
+                return;
+            }
+
+            const trainerData = {
+                name: document.getElementById("trainerName").value.trim(),
+                email: document.getElementById("trainerEmail").value.trim(),
+                courses: selectedCourses,
+                language: document.getElementById("trainerLanguage").value,
+                pace: document.getElementById("trainerPace").value,
+                style: document.getElementById("trainerStyle").value,
+                experience: Number(
+                    document.getElementById("trainerExperience").value
+                ),
+                bio: document.getElementById("trainerBio").value.trim(),
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, "trainers"), trainerData);
+
+                document.getElementById("formMessage").innerText =
+                    "Trainer added successfully.";
+
+                trainerForm.reset();
+
+                loadTrainers();
+            } catch (error) {
+                document.getElementById("formMessage").innerText =
+                    "Could not add the trainer. Check that Live Server is running.";
+
+                console.error(error);
+            }
+        });
+
+        async function loadTrainers() {
+            document.getElementById("loadingMessage").innerText =
+                "Loading trainers...";
+
+            trainerTableBody.innerHTML = "";
+
+            try {
+                const trainerSnapshot = await getDocs(
+                    collection(db, "trainers")
+                );
+
+                let htmlCount = 0;
+                let cssCount = 0;
+                let jsCount = 0;
+
+                trainerSnapshot.forEach(function(trainerDocument) {
+                    const trainer = trainerDocument.data();
+
+                    if (trainer.courses.includes("HTML")) {
+                        htmlCount += 1;
+                    }
+
+                    if (trainer.courses.includes("CSS")) {
+                        cssCount += 1;
+                    }
+
+                    if (trainer.courses.includes("JavaScript")) {
+                        jsCount += 1;
+                    }
+
+                    const row = document.createElement("tr");
+
+                    const values = [
+                        trainer.name,
+                        trainer.courses.join(", "),
+                        trainer.language,
+                        trainer.pace,
+                        trainer.style,
+                        trainer.experience + " years"
+                    ];
+
+                    values.forEach(function(value) {
+                        const cell = document.createElement("td");
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+
+                    trainerTableBody.appendChild(row);
+                });
+
+                document.getElementById("trainerCount").innerText =
+                    trainerSnapshot.size;
+
+                document.getElementById("htmlTrainerCount").innerText =
+                    htmlCount;
+
+                document.getElementById("cssTrainerCount").innerText =
+                    cssCount;
+
+                document.getElementById("jsTrainerCount").innerText =
+                    jsCount;
+
+                if (trainerSnapshot.size === 0) {
+                    document.getElementById("loadingMessage").innerText =
+                        "No trainers have been added yet.";
+                } else {
+                    document.getElementById("loadingMessage").innerText =
+                        trainerSnapshot.size + " trainer records found.";
+                }
+            } catch (error) {
+                document.getElementById("loadingMessage").innerText =
+                    "Could not load trainers. Check that Live Server is running.";
+
+                console.error(error);
+            }
+        }
+
+        window.loadSampleTrainers = async function() {
+            const confirmed = confirm(
+                "Add 36 sample trainers to Firebase for testing?"
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            const sampleProfiles = [
+                {
+                    name: "Aarav Sharma",
+                    language: "English",
+                    pace: "Fast and Crisp",
+                    style: "Practical and Project Based"
+                },
+                {
+                    name: "Priya Reddy",
+                    language: "English",
+                    pace: "Balanced",
+                    style: "Simple Step by Step"
+                },
+                {
+                    name: "Rahul Verma",
+                    language: "English",
+                    pace: "Slow and Detailed",
+                    style: "Story Based and Engaging"
+                },
+                {
+                    name: "Ananya Rao",
+                    language: "Telugu",
+                    pace: "Fast and Crisp",
+                    style: "Practical and Project Based"
+                },
+                {
+                    name: "Kiran Kumar",
+                    language: "Telugu",
+                    pace: "Balanced",
+                    style: "Simple Step by Step"
+                },
+                {
+                    name: "Sravani Devi",
+                    language: "Telugu",
+                    pace: "Slow and Detailed",
+                    style: "Story Based and Engaging"
+                },
+                {
+                    name: "Vikram Singh",
+                    language: "Hindi",
+                    pace: "Fast and Crisp",
+                    style: "Practical and Project Based"
+                },
+                {
+                    name: "Neha Gupta",
+                    language: "Hindi",
+                    pace: "Balanced",
+                    style: "Simple Step by Step"
+                },
+                {
+                    name: "Rohan Mehta",
+                    language: "Hindi",
+                    pace: "Slow and Detailed",
+                    style: "Story Based and Engaging"
+                },
+                {
+                    name: "Kavya Nair",
+                    language: "Hindi + English",
+                    pace: "Fast and Crisp",
+                    style: "Practical and Project Based"
+                },
+                {
+                    name: "Arjun Das",
+                    language: "Hindi + English",
+                    pace: "Balanced",
+                    style: "Simple Step by Step"
+                },
+                {
+                    name: "Meera Iyer",
+                    language: "Hindi + English",
+                    pace: "Slow and Detailed",
+                    style: "Story Based and Engaging"
+                }
+            ];
+
+            const courses = ["HTML", "CSS", "JavaScript"];
+            const batch = writeBatch(db);
+
+            courses.forEach(function(course) {
+                sampleProfiles.forEach(function(profile, index) {
+                    const trainerReference = doc(
+                        db,
+                        "trainers",
+                        "sample-" + course.toLowerCase() + "-" + (index + 1)
+                    );
+
+                    batch.set(trainerReference, {
+                        name: profile.name + " - " + course + " Mentor",
+                        email:
+                            "sample." +
+                            course.toLowerCase() +
+                            "." +
+                            (index + 1) +
+                            "@capacityconnect.com",
+                        courses: [course],
+                        language: profile.language,
+                        pace: profile.pace,
+                        style: profile.style,
+                        experience: 2 + (index % 8),
+                        bio:
+                            "Sample " +
+                            course +
+                            " trainer with a " +
+                            profile.style.toLowerCase() +
+                            " approach.",
+                        isSample: true,
+                        createdAt: serverTimestamp()
+                    });
+                });
+            });
+
+            try {
+                await batch.commit();
+
+                document.getElementById("sampleMessage").innerText =
+                    "Sample trainers have been added successfully.";
+
+                loadTrainers();
+            } catch (error) {
+                document.getElementById("sampleMessage").innerText =
+                    "Could not add sample trainers.";
+
+                console.error(error);
+            }
+        };
+
+        loadTrainers();
+    </script>
 
 </body>
-
 </html>

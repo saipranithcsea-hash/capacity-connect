@@ -1,155 +1,432 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Recommendations - Skill Connect</title>
+=======
+    <title>Skill Gap & Recommendations - Capacity Connect</title>
+>>>>>>> origin/m2-skill-gap
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="login-box">
+    <div class="login-box recommendation-box">
 
         <h1>Skill Gap & Recommendations</h1>
 
-        <h2>Your Skill Gap</h2>
-
-        <p id="skillMessage">
-            Checking your assessment...
+        <p id="welcomeMessage">
+            Select your target role to analyse your current skills.
         </p>
 
-        <div id="skillGap"></div>
+        <label for="targetRole"><strong>Choose your target role:</strong></label>
 
+        <select id="targetRole" onchange="analyseSkills()">
+            <option value="Web Developer">Web Developer</option>
+            <option value="Frontend Developer">Frontend Developer</option>
+            <option value="JavaScript Developer">JavaScript Developer</option>
+        </select>
 
-        <h2>Recommended Course</h2>
+        <div class="match-box">
+            <h2>Your Skill Match</h2>
+            <progress id="matchProgress" value="0" max="100"></progress>
+            <p><strong><span id="matchPercent">0</span>% match</strong></p>
+        </div>
 
-        <div class="card">
+        <h2>Your Skill Analysis</h2>
 
-    <h3 id="courseName">
-        JavaScript Basics
-    </h3>
+        <p id="skillMessage">Checking your assessment...</p>
 
-    <p id="courseDescription">
-        Recommended based on your skill assessment.
-    </p>
+        <div id="skillGap" class="skill-grid"></div>
 
-    <div>
-    <a href="learning.html" class="start-button">
-        Start Learning
-    </a>
+        <button type="button" onclick="toggleSkillEditor()">
+            Update My Skills
+        </button>
 
-    <a href="trainer.html" class="start-button">
-        Find a Trainer
-    </a>
-</div>
+        <div id="skillEditor" class="card skill-editor">
+            <h3>Update Your Skill Levels</h3>
 
-</div>
+            <label for="editHtmlLevel">HTML</label>
+            <select id="editHtmlLevel">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
 
+            <label for="editCssLevel">CSS</label>
+            <select id="editCssLevel">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+
+            <label for="editJsLevel">JavaScript</label>
+            <select id="editJsLevel">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+            </select>
+
+            <label for="newSkill">Add a newly learned skill (optional)</label>
+            <input type="text" id="newSkill" placeholder="Example: React">
+
+            <button type="button" onclick="saveSkillUpdates()">
+                Save Changes and Recalculate
+            </button>
+
+            <p id="updateMessage"></p>
+        </div>
+
+        <h2>Recommended Learning</h2>
+
+        <p class="course-choice-message">
+            Courses are shown in priority order. You may choose any course to learn now.
+        </p>
+
+        <div id="recommendations" class="skill-grid"></div>
 
         <p>
-            <a href="assessment.html">← Back to Assessment</a>
+            <a href="assessment.html">&larr; Back to Assessment</a>
         </p>
 
     </div>
 
-
     <script>
+        const levelValues = {
+            "Beginner": 1,
+            "Intermediate": 2,
+            "Advanced": 3
+        };
 
-        let htmlLevel =
-            localStorage.getItem("htmlLevel") || "Beginner";
+        const storageKeys = {
+            "HTML": "htmlLevel",
+            "CSS": "cssLevel",
+            "JavaScript": "jsLevel"
+        };
 
-        let cssLevel =
-            localStorage.getItem("cssLevel") || "Beginner";
+        const roles = {
+            "Web Developer": {
+                description: "Build complete websites using HTML, CSS, and JavaScript.",
+                skills: {
+                    "HTML": 2,
+                    "CSS": 2,
+                    "JavaScript": 2
+                }
+            },
 
-        let jsLevel =
-            localStorage.getItem("jsLevel") || "Beginner";
+            "Frontend Developer": {
+                description: "Create polished and responsive user interfaces.",
+                skills: {
+                    "HTML": 3,
+                    "CSS": 3,
+                    "JavaScript": 2
+                }
+            },
 
+            "JavaScript Developer": {
+                description: "Focus on interactive web features and JavaScript programming.",
+                skills: {
+                    "HTML": 2,
+                    "CSS": 2,
+                    "JavaScript": 3
+                }
+            }
+        };
 
-        let skillGap = document.getElementById("skillGap");
+        const courseDetails = {
+            "HTML": {
+                title: "HTML Fundamentals",
+                description: "Learn the structure and building blocks of web pages."
+            },
 
-        let gaps = [];
+            "CSS": {
+                title: "CSS Fundamentals",
+                description: "Learn styling, layouts, colours, and responsive design."
+            },
 
+            "JavaScript": {
+                title: "JavaScript Basics",
+                description: "Learn how to add logic and interactivity to web pages."
+            }
+        };
 
-        if (htmlLevel === "Beginner") {
-            gaps.push("HTML");
+        function getLevel(skill) {
+            const savedLevel =
+                localStorage.getItem(storageKeys[skill]) || "Beginner";
+
+            return {
+                name: savedLevel,
+                value: levelValues[savedLevel] || 1
+            };
         }
 
-        if (cssLevel === "Beginner") {
-            gaps.push("CSS");
+        function getLevelName(value) {
+            if (value === 3) {
+                return "Advanced";
+            }
+
+            if (value === 2) {
+                return "Intermediate";
+            }
+
+            return "Beginner";
         }
 
-        if (jsLevel === "Beginner") {
-            gaps.push("JavaScript");
+        function createSkillCard(skill, currentLevel, requiredValue) {
+            const gap = requiredValue - currentLevel.value;
+            const card = document.createElement("div");
+
+            card.className = "card skill-card";
+
+            const title = document.createElement("h3");
+            title.textContent = skill;
+            card.appendChild(title);
+
+            const current = document.createElement("p");
+            current.innerHTML =
+                "<strong>Current:</strong> " + currentLevel.name;
+            card.appendChild(current);
+
+            const required = document.createElement("p");
+            required.innerHTML =
+                "<strong>Required:</strong> " + getLevelName(requiredValue);
+            card.appendChild(required);
+
+            const status = document.createElement("p");
+
+            if (gap <= 0) {
+                status.className = "status-strong";
+                status.textContent = "Strong match";
+            } else if (gap === 1) {
+                status.className = "status-improve";
+                status.textContent = "Needs improvement";
+            } else {
+                status.className = "status-gap";
+                status.textContent = "Priority skill gap";
+            }
+
+            card.appendChild(status);
+
+            return {
+                card: card,
+                gap: gap
+            };
         }
 
+        function analyseSkills() {
+            const selectedRole = document.getElementById("targetRole").value;
+            const role = roles[selectedRole];
+            const skillGap = document.getElementById("skillGap");
+            const recommendations = document.getElementById("recommendations");
 
-        if (gaps.length > 0) {
+            localStorage.setItem("targetRole", selectedRole);
 
-            document.getElementById("skillMessage").innerText =
-                "These skills need improvement:";
+            skillGap.innerHTML = "";
+            recommendations.innerHTML = "";
 
-            gaps.forEach(function(skill) {
+            document.getElementById("welcomeMessage").innerText =
+                "Target role: " + selectedRole + ". " + role.description;
 
-                let card = document.createElement("div");
+            let totalRequired = 0;
+            let achievedScore = 0;
+            let gaps = [];
 
-                card.className = "card";
+            Object.keys(role.skills).forEach(function(skill) {
+                const requiredValue = role.skills[skill];
+                const currentLevel = getLevel(skill);
 
-                card.innerHTML =
-                    "<h3>" + skill + "</h3>" +
-                    "<p>Current Level: Beginner</p>" +
-                    "<p>Required Level: Intermediate</p>";
+                const result = createSkillCard(
+                    skill,
+                    currentLevel,
+                    requiredValue
+                );
 
-                skillGap.appendChild(card);
+                skillGap.appendChild(result.card);
 
+                totalRequired += requiredValue;
+                achievedScore += Math.min(
+                    currentLevel.value,
+                    requiredValue
+                );
+
+                if (result.gap > 0) {
+                    gaps.push({
+                        skill: skill,
+                        gap: result.gap
+                    });
+                }
             });
 
-        } else {
+            const match = Math.round(
+                (achievedScore / totalRequired) * 100
+            );
 
-            document.getElementById("skillMessage").innerText =
-                "Great! No major skill gaps found.";
+            document.getElementById("matchProgress").value = match;
+            document.getElementById("matchPercent").innerText = match;
 
+            gaps.sort(function(firstGap, secondGap) {
+                return secondGap.gap - firstGap.gap;
+            });
+
+            if (gaps.length === 0) {
+                document.getElementById("skillMessage").innerText =
+                    "Excellent! Your current skills meet the requirements for this role.";
+
+                createRecommendationCard(
+                    "Advanced Web Development",
+                    "Your core skills are strong. Continue with advanced projects and practice.",
+                    0,
+                    "Web Development"
+                );
+
+                localStorage.setItem(
+                    "recommendedSkill",
+                    "Web Development"
+                );
+            } else {
+                document.getElementById("skillMessage").innerText =
+                    "Choose any recommended course below. Priority 1 is suggested first.";
+
+                gaps.forEach(function(item, index) {
+                    const course = courseDetails[item.skill];
+
+                    createRecommendationCard(
+                        course.title,
+                        course.description,
+                        index + 1,
+                        item.skill
+                    );
+                });
+
+                localStorage.setItem(
+                    "recommendedSkill",
+                    gaps[0].skill
+                );
+            }
         }
 
+        function createRecommendationCard(title, description, priority, skill) {
+            const recommendations = document.getElementById("recommendations");
+            const card = document.createElement("div");
 
-        // Course recommendation
+            card.className = "card recommendation-card";
 
-        if (jsLevel === "Beginner") {
+            const heading = document.createElement("h3");
+            heading.textContent = title;
+            card.appendChild(heading);
 
-            document.getElementById("courseName").innerText =
-                "JavaScript Basics";
+            const text = document.createElement("p");
+            text.textContent = description;
+            card.appendChild(text);
 
-            document.getElementById("courseDescription").innerText =
-                "Recommended because your JavaScript level is Beginner.";
+            const label = document.createElement("p");
 
-        } else if (htmlLevel === "Beginner") {
+            if (priority === 1) {
+                label.className = "status-gap";
+                label.textContent = "Priority 1 - Recommended first";
+            } else if (priority > 1) {
+                label.className = "status-improve";
+                label.textContent = "Priority " + priority;
+            } else {
+                label.className = "status-strong";
+                label.textContent = "Your next learning step";
+            }
 
-            document.getElementById("courseName").innerText =
-                "HTML Fundamentals";
+            card.appendChild(label);
 
-            document.getElementById("courseDescription").innerText =
-                "Recommended because your HTML level is Beginner.";
+            const chooseButton = document.createElement("button");
+            chooseButton.className = "choose-course-button";
+            chooseButton.textContent = "Choose This Course";
 
-        } else if (cssLevel === "Beginner") {
+            chooseButton.onclick = function() {
+                selectCourse(skill);
+            };
 
-            document.getElementById("courseName").innerText =
-                "CSS Fundamentals";
-
-            document.getElementById("courseDescription").innerText =
-                "Recommended because your CSS level is Beginner.";
-
+            card.appendChild(chooseButton);
+            recommendations.appendChild(card);
         }
-        else {
 
-    document.getElementById("courseName").innerText =
-        "Advanced Web Development";
+        function selectCourse(skill) {
+            localStorage.setItem("selectedLearningSkill", skill);
+            window.location.href = "learning-preferences.html";
+        }
 
-    document.getElementById("courseDescription").innerText =
-        "Your basic skills are strong. Continue with advanced learning.";
-}
+        function toggleSkillEditor() {
+            const editor = document.getElementById("skillEditor");
 
+            if (editor.style.display === "block") {
+                editor.style.display = "none";
+            } else {
+                document.getElementById("editHtmlLevel").value =
+                    getLevel("HTML").name;
+
+                document.getElementById("editCssLevel").value =
+                    getLevel("CSS").name;
+
+                document.getElementById("editJsLevel").value =
+                    getLevel("JavaScript").name;
+
+                document.getElementById("updateMessage").innerText = "";
+                editor.style.display = "block";
+            }
+        }
+
+        function saveSkillUpdates() {
+            const htmlLevel =
+                document.getElementById("editHtmlLevel").value;
+
+            const cssLevel =
+                document.getElementById("editCssLevel").value;
+
+            const jsLevel =
+                document.getElementById("editJsLevel").value;
+
+            const newSkill =
+                document.getElementById("newSkill").value.trim();
+
+            localStorage.setItem("htmlLevel", htmlLevel);
+            localStorage.setItem("cssLevel", cssLevel);
+            localStorage.setItem("jsLevel", jsLevel);
+
+            if (newSkill !== "") {
+                const savedSkills = localStorage.getItem("skills") || "";
+
+                const skillList = savedSkills
+                    .split(",")
+                    .map(function(skill) {
+                        return skill.trim();
+                    })
+                    .filter(function(skill) {
+                        return skill !== "";
+                    });
+
+                const alreadyExists = skillList.some(function(skill) {
+                    return skill.toLowerCase() === newSkill.toLowerCase();
+                });
+
+                if (!alreadyExists) {
+                    skillList.push(newSkill);
+                    localStorage.setItem("skills", skillList.join(", "));
+                }
+            }
+
+            document.getElementById("newSkill").value = "";
+            document.getElementById("updateMessage").innerText =
+                "Your skills have been saved and the analysis has been updated.";
+
+            analyseSkills();
+        }
+
+        window.onload = function() {
+            const savedRole =
+                localStorage.getItem("targetRole") || "Web Developer";
+
+            document.getElementById("targetRole").value = savedRole;
+
+            analyseSkills();
+        };
     </script>
 
 </body>
-
 </html>
