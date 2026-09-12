@@ -160,7 +160,7 @@
                 Checking recommendation...
             </p>
 
-            <button onclick="window.location.href='learning.html'">
+            <button onclick="window.location.href='recommendation.html'">
                 Continue Learning
             </button>
 
@@ -181,45 +181,6 @@
 
         </div>
 
-
-        <div class="card">
-
-            <h3>Learning Status</h3>
-
-            <p id="learningStatus">
-                Keep learning and improving your skills!
-            </p>
-
-            <button onclick="window.location.href='learning.html'">
-                Go to Learning
-            </button>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>Quick Actions</h3>
-
-            <button onclick="window.location.href='assessment.html'">
-                Take Assessment
-            </button>
-
-            <button onclick="window.location.href='learning.html'">
-                Continue Learning
-            </button>
-
-            <button onclick="window.location.href='quiz.html'">
-                Take Quiz
-            </button>
-
-            <button onclick="window.location.href='recommendation.html'">
-                View Recommendations
-            </button>
-
-        </div>
-
-
         <p>
             <a href="index.html">← Back to Home</a>
         </p>
@@ -238,7 +199,7 @@
             localStorage.getItem("qualification") || "-";
 
         document.getElementById("experience").innerText =
-            localStorage.getItem("experience") || "-";
+    localStorage.getItem("experience") || "-";
 
         document.getElementById("skills").innerText =
             localStorage.getItem("skills") || "-";
@@ -397,33 +358,7 @@
             overall;
 
 
-        /* Learning Status */
-
-        let learningStatus =
-            document.getElementById("learningStatus");
-
-
-        if (overall >= 80) {
-
-            learningStatus.innerText =
-                "Excellent progress! Keep it up!";
-
-        }
-
-        else if (overall >= 50) {
-
-            learningStatus.innerText =
-                "Good progress! Keep learning!";
-
-        }
-
-        else {
-
-            learningStatus.innerText =
-                "Start learning and improve your skills!";
-
-        }
-
+       
 
         /* Course Recommendation */
 
